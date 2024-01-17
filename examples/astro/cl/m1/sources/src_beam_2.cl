@@ -5,7 +5,7 @@
 
 #ifdef IS_2D
 
-void src_beam_2(const double t, const double x[2], double w[3])
+void m1_src_beam_2(const double t, const double x[2], double w[3])
 {
     double norm;
     double c0;
@@ -39,11 +39,12 @@ void src_beam_2(const double t, const double x[2], double w[3])
 
 #else  // IS_2D
 
-void src_beam_2(const double t, const double x[3], double w[4])
+void m1_src_beam_2(const double t, const double x[3], double w[4])
 {
     double norm;
     double c0;
     double eps = 1e-8;
+    double vec_norm;
     
     // Spatial coefficient for beam_0
     c0 = - 0.5  / (0.00500000000000000 * 0.00500000000000000);
@@ -61,14 +62,20 @@ void src_beam_2(const double t, const double x[3], double w[4])
            (x[1] - 0.50000000000000000) * (x[1] - 0.50000000000000000) +
            (x[2] - 0.25000000000000000) * (x[2] - 0.25000000000000000);
 
-    double p1 = eps + exp(c0 * norm);
-
+    double p1 = eps + exp(c0 * norm);    
     
     // Source values
     w[0] =  + 0.00110778365849135 * p0 + 0.00055389182924568 * p1;
     w[1] =  + 0.00135505747226350 * p0 + 0.00001911671589729 * p1;
     w[2] =  - 0.00000000000000000 * p0 + 0.00095876937117086 * p1;
     w[3] =  - 0.00135505747226350 * p0 - 0.00001911671589729 * p1;
+
+    vec_norm = sqrt(w[1]*w[1] + w[2]*w[2] + w[3] * w[3]);
+    w[1] = w[1]/vec_norm;
+    w[2] = w[2]/vec_norm;
+    w[3] = w[3]/vec_norm;
+
+    printf("\n%lf",sqrt(w[1]*w[1] + w[2]*w[2] + w[3] * w[3])/w[0]);
 
 }
 
@@ -80,7 +87,7 @@ void src_beam_2(const double t, const double x[3], double w[4])
 
 #ifdef IS_2D
 
-void src_beam_2(const float t, const float x[2], float w[3])
+void m1_src_beam_2(const float t, const float x[2], float w[3])
 {
     float norm;
     float c0;
@@ -114,11 +121,12 @@ void src_beam_2(const float t, const float x[2], float w[3])
 
 #else  // IS_2D 
 
-void src_beam_2(const float t, const float x[3], float w[4])
+void m1_src_beam_2(const float t, const float x[3], float w[4])
 {
     float norm;
     float c0;
     float eps = 1e-8F;
+    float vec_norm;
     
     // Spatial coefficient for beam_0
     c0 = - 0.5F  / (0.00500000F * 0.00500000F);
@@ -144,6 +152,13 @@ void src_beam_2(const float t, const float x[3], float w[4])
     w[1] =  + 0.00135506F * p0 + 0.00001912F * p1;
     w[2] =  - 0.00000000F * p0 + 0.00095877F * p1;
     w[3] =  - 0.00135506F * p0 - 0.00001912F * p1;
+
+    vec_norm = sqrt(w[1]*w[1] + w[2]*w[2] + w[3] * w[3]);
+    w[1] = w[1]/vec_norm;
+    w[2] = w[2]/vec_norm;
+    w[3] = w[3]/vec_norm;
+
+    printf("\n%f",sqrt(w[1]*w[1] + w[2]*w[2] + w[3] * w[3]) / w[0]);
 
 }
 

@@ -15,9 +15,9 @@ set -e
 # MESH_NY=100
 # MESH_NZ=100
 
-MESH_NX=65
-MESH_NY=65
-MESH_NZ=65
+MESH_NX=1
+MESH_NY=1
+MESH_NZ=1
 
 MESH_DIM=3
 MESH_GEO_FILE="/home/m.palanque/Documents/thèse/RKMeiS/data/geo/cuboid.geo"
