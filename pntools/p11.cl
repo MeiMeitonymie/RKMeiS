@@ -1,6 +1,3 @@
-#ifndef SRC_BEAM_2_CL
-#define SRC_BEAM_2_CL
-
 #ifdef USE_SPHERICAL_HARMONICS_P1
 #ifdef USE_DOUBLE
 
@@ -22,7 +19,7 @@ void src_beam_2(const double t, const double x[2], double w[3])
 
     // Spatial coefficient for beam_1
     c0 = - 0.5  / (0.00500000000000000 * 0.00500000000000000);
-    
+     
     norm = (x[0] - 0.50000000000000000) * (x[0] - 0.50000000000000000) + 
            (x[1] - 0.50000000000000000) * (x[1] - 0.50000000000000000);
 
@@ -1969,4 +1966,4 @@ void src_beam_2(const float t, const float x[3], float w[144])
 
 #endif // USE_DOUBLE
 #endif // USE_SPHERICAL_HARMONICS_P11
-#endif
+
