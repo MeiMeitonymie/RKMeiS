@@ -51,7 +51,7 @@ if __name__ == "__main__":
         cfl=0.9,
         dt=None,
         iter_max=400,
-        use_muscl=True,
+        use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,
         use_double=True,

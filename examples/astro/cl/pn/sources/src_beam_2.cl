@@ -1969,4 +1969,5 @@ void src_beam_2(const float t, const float x[3], float w[144])
 
 #endif // USE_DOUBLE
 #endif // USE_SPHERICAL_HARMONICS_P11
-#endif
+
+#endif // SRC_BEAM_2
