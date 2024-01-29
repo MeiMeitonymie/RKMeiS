@@ -71,6 +71,7 @@ class AstroFVSolverCL(FVSolverCl):
                 ocl_queue,
                 (self.mesh.nb_cells,),
                 None,
+                self.cells_center_d.data, 
                 self.nh_d.data,
                 self.temp_d.data,
                 self.xi_d.data,

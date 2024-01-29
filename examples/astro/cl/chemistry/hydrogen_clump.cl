@@ -226,19 +226,64 @@ double get_root_newton_raphson(const double a, const double b, const double c,
     return x;
 }
 
-__kernel void chem_init_sol(__global real_t *nh, __global real_t *temp,
-                            __global real_t *xi, __global real_t *xc)
+
+__kernel void chem_init_sol(__global real_t *x, __global real_t *nh,
+                            __global real_t *temp, __global real_t *xi)
 {
     // Current cell ID
     const long id = get_global_id(0);
-
-    // Stromgren sphere test case values
-    xi[id] = (real_t)1.2e-3;
-    nh[id] = (real_t)2e-4*1e6;
-    temp[id] = (real_t)8000.;
-
-    //xi in clump: 0.04*1e6
-    //temp in clump: 80
+    
+    // Current cell: center coordinates
+    real_t xyz[DIM];
+    
+    for (int k = 0; k < DIM; k++) {
+        long imem = id * DIM + k;
+        xyz[k] = x[imem];
+    }
+    // x -> xyz[0]
+    // y -> xyz[1]
+    // z -> xyz[Z]
+#ifdef USE_DOUBLE
+    const double src_x = 0.5;
+    const double src_y = 0.5;
+    const double src_z = 0.5;
+    const double src_r = 0.05;
+    const double xi_0 = 1.2e-3;
+    const double nh_0 = 2e-4*1e6;
+    const double temp_0 = 8000.;
+    const double nh_c = 0.04*1e6;
+    const double temp_c = 80.; 
+#else
+    const float src_x = 0.5f;
+    const float src_y = 0.5f;
+    const float src_z = 0.5f;
+    const float src_r = 0.05f;
+    const float xi_0 = 1.2e-3f;
+    const float nh_0 = 2e-4*1e6f;
+    const float temp_0 = 8000.f;
+    const float nh_c = 0.04*1e6f;
+    const float temp_c = 80.f; 
+#endif
+    
+#ifdef IS_2D
+    const real_t d =
+        (xyz[0] - src_x) * (xyz[0] - src_x) + (xyz[1] - src_y) * (xyz[1] - src_y);
+#else
+    const real_t d = (xyz[0] - src_x) * (xyz[0] - src_x) +
+                     (xyz[1] - src_y) * (xyz[1] - src_y) +
+                     (xyz[2] - src_z) * (xyz[2] - src_z);
+#endif
+    
+    if (d > src_r * src_r) {
+        xi[id] = (real_t)1.2e-3;
+        nh[id] = (real_t)2e-4*1e6;
+        temp[id] = (real_t)8000.;
+    } else {
+        xi[id] = (real_t)1.2e-3;
+        nh[id] = (real_t)0.04*1e6;
+        temp[id] = (real_t)80.; 
+    }
+    
 }
 
 __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
