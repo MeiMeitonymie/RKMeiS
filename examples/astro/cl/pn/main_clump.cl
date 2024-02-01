@@ -1,5 +1,5 @@
-#ifndef M1_CL
-#define M1_CL
+#ifndef PN_CL
+#define PN_CL
 
 // KEEP DEFINE BELOW
 // Solver injected values
@@ -25,39 +25,63 @@
 #define PHY_DT_DIM __PHY_DT_DIM__
 #define PHY_W0_DIM __PHY_W0_DIM__
 
-#include "numfluxes/m1.cl"
+#ifdef USE_SPHERICAL_HARMONICS_P1
+#include "numfluxes/p1.cl"
+#endif
+
+#ifdef USE_SPHERICAL_HARMONICS_P3
+#include "numfluxes/p3.cl"
+#endif
+
+#ifdef USE_SPHERICAL_HARMONICS_P5
+#include "numfluxes/p5.cl"
+#endif
+
+#ifdef USE_SPHERICAL_HARMONICS_P7
+#include "numfluxes/p7.cl"
+#endif
+
+#ifdef USE_SPHERICAL_HARMONICS_P9
+#include "numfluxes/p9.cl"
+#endif
+
+#ifdef USE_SPHERICAL_HARMONICS_P11
+#include "numfluxes/p11.cl"
+#endif
+
+// Add beam sources
 #include "sources/clump.cl"
 
+// Add chemistry module
 #ifdef USE_CHEMISTRY
 #include "../chemistry/hydrogen_clump.cl"
 #endif
 
 void model_init_cond(const real_t t, const real_t x[DIM], real_t s[M])
 {
-    m1_src_clump(t, x, s);
+    pn_src_clump(t, x, s);
 }
 
 void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
                real_t s[M])
 {
-    m1_src_clump(t, x, s);
+    pn_src_clump(t, x, s);
 
     // WARNING: Divide by DT (adim) is required to fit test case
     for (int k = 0; k < M; k++) {
         s[k] = s[k] / DT;
-        //printf("\n%lf",wn[k]);
     }
 }
 
 void model_flux_num(const real_t wL[M], const real_t wR[M],
                     const real_t vn[DIM], real_t flux[M])
 {
-    m1_num_flux_rusanov(wL, wR, vn, flux);
+    num_flux_rus(wL, wR, vn, flux);
 }
 
 void model_flux_num_bd(const real_t wL[M], const real_t wR[M],
                        const real_t vn[DIM], real_t flux[M])
 {
-    m1_num_flux_rusanov(wL, wL, vn, flux);
+    num_flux_rus(wL, wL, vn, flux);
 }
 #endif

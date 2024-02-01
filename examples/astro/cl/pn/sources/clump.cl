@@ -13,7 +13,9 @@
 #define SRC_VACCUM (FLT_EPSILON)
 #endif
 
-static inline void m1_src_clump(const real_t t, const real_t x[DIM],
+#include "./clump_values.cl"
+
+static inline void pn_src_clump(const real_t t, const real_t x[DIM],
                                            real_t w[M])
 {
     const real_t t0 = SRC_VACCUM;
@@ -27,25 +29,20 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
     const float t1 = 0.1f;
     const float t2 = 0.f;
     const float t3 = 1.f;
-    const float t4 = 0.9f;
+    const double t4 = 0.9f;
 #endif
     const real_t t5 = t0 * t1;
 
     if (t >= DT) {
-        w[0] = t2;
-        w[1] = t2;
-        w[2] = t2;
-#ifndef IS_2D
-        w[3] = t2;
-#endif
+        for (int k = 0; k < M; k++) {
+            w[k] = t2;
+        }
     } else {
         // Apply some vaccum (non zero) when initializing solution
         w[0] = t0;
-        w[1] = t5;
-        w[2] = t5;
-#ifndef IS_2D
-        w[3] = t5;
-#endif
+        for (int k = 1; k < M; k++) {
+            w[k] = t2;
+        }
     }
 
     const real_t t6 = t4 * DX;
@@ -54,16 +51,8 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
 
     // Locate cell at the center of the geometry
     if ((x[0] >= SRC_X) && (x[0] <= DX))  {
-        w[0] = t3;
-        w[1] = t4;
-        w[2] = t2;
-#ifndef IS_2D
-        w[3] = t2;
+        pn_clump_value(w);
 
-        //const double test = sqrt(w[1]*w[1] + w[2]*w[2] + w[3] * w[3]) / w[0];
-        //printf("\n%lf", test);
-
-#endif
     }
 }
 #endif

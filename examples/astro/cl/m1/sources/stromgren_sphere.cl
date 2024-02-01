@@ -27,7 +27,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     const float t1 = 0.1f;
     const float t2 = 0.f;
     const float t3 = 1.f;
-    const double t4 = 0.5f;
+    const float t4 = 0.5f;
 #endif
     const real_t t5 = t0 * t1;
 

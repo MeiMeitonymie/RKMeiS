@@ -63,8 +63,8 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = True
-    use_pn = False
+    use_m1 = False
+    use_pn = True
     pn_order = 3
 
 
@@ -77,10 +77,11 @@ if __name__ == "__main__":
     cfl = 0.8
 
     # Dim values
-    x_phy_value = 6.6 * 3.086e19 * 2
+    x_phy_value = 6.6 * 3.086e19
     c_phy_value = 3.0e8 
-    flux_phy_value = 1e6*1e6 #flux in cgs brought back in SI
-    w_phy_value = flux_phy_value #possibly false, check needed
+    flux_phy_value = 1e6*1e4 #flux in cgs brought back in SI
+    #w_phy_value = flux_phy_value * dx_dim**2 * c_phy_value
+    w_phy_value = 9.81867762745562e+47
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -94,6 +95,7 @@ if __name__ == "__main__":
     )
 
     iter = int(np.floor(w_phy_value / dt_dim))
+    #w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
     w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
 
     pprint_dict(
@@ -157,7 +159,7 @@ if __name__ == "__main__":
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=100,
-        use_double=False,
+        use_double=True,
         use_periodic_bd=False,
         use_chemistry=True,
     )

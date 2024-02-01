@@ -995,7 +995,7 @@ for order in [1, 3, 5, 7, 9, 11]:
             "values": pn_get_src_proj(
                 order,
                 pn_src_beam,
-                intensity=intensity,
+                intensity=0.,
                 th_0=0,
                 ph_0=0,
                 sigma=sig,
