@@ -13,6 +13,7 @@ import pyopencl.array as cl_array
 
 from rkms.mesh import MeshStructured
 from rkms.model import Model
+from rkms.common import cast_data
 
 from ._solver import (
     JSON_FILE_NAME,
@@ -184,7 +185,7 @@ class FVTimeData:
 class FVSolverCl(SolverCl):
     def __init__(
         self,
-        filename: str,
+        mesh: MeshStructured,
         model: Model,
         time_mode: FVTimeMode,
         tmax,
@@ -197,12 +198,13 @@ class FVSolverCl(SolverCl):
         export_idx: list[int] | None = None,
         export_frq: int | None = None,
         use_double: bool = False,
-        use_periodic_bd=False,
         **kwargs,
     ) -> None:
-        # Set mesh object
-        assert isinstance(filename, str)
-        self.mesh = MeshStructured(filename, use_double, use_periodic_bd)
+        self.mesh = mesh
+
+        # Mesh are always constructed in np.float64
+        if not use_double:
+            cast_data(self.mesh, np.float32)
 
         # Set float/double dtype
         self.use_double = use_double
@@ -281,12 +283,6 @@ class FVSolverCl(SolverCl):
         # Host buffer storing solution values at t_n
         self.wn_h = np.empty(size, dtype=self.dtype)
 
-        # Reconstructed variables buffer size
-        size = self.model.nb_macro_to_reconstruct * self.mesh.nb_cells
-
-        # Host buffer storing eventual reconstructed variables
-        self.wn_rec_h = np.empty(size, dtype=self.dtype)
-
     @property
     def cl_replace_map(self) -> dict:
         solver_map = {
@@ -359,26 +355,6 @@ class FVSolverCl(SolverCl):
         self.elem2elem_d = cl_array.to_device(
             ocl_queue,
             self.mesh.elem2elem,
-        )
-
-        # Set reconstructed variables buffer size
-        size = self.model.nb_macro_to_reconstruct * self.mesh.nb_cells
-
-        # Set device buffer storing eventual reconstructed variables
-        self.wn_rec_d = cl_array.empty(
-            ocl_queue,
-            size,
-            dtype=self.dtype,
-        )
-
-        # Compute buffer allocated size
-        self.dalloc_size = get_mem_size_mb(
-            "OpenCL",
-            self.wn_d,
-            self.wnp1_d,
-            self.cells_center_d,
-            self.elem2elem_d,
-            self.wn_rec_d,
         )
 
     def _init_sol(self, ocl_queue, ocl_prg):
