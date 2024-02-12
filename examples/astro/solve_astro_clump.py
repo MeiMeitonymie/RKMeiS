@@ -80,8 +80,8 @@ if __name__ == "__main__":
     x_phy_value = 6.6 * 3.086e19 
     c_phy_value = 3.0e8 
     flux_phy_value = 1e6*1e4 #flux in cgs brought back in SI
-    #w_phy_value = flux_phy_value * dx_dim**2 * c_phy_value
-    w_phy_value = 9.81867762745562e+47
+    #w_phy_value = flux_phy_value * dx_dim**2
+    
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -94,8 +94,10 @@ if __name__ == "__main__":
         c_phy_value=c_phy_value,
     )
 
+    w0_rescale = flux_phy_value / c_phy_value #density
+    w_phy_value = w0_rescale * (dx_dim * dy_dim * dz_dim) / dt_dim#emissivity
     iter = int(np.floor(w_phy_value / dt_dim))
-    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
+    #w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
 
     pprint_dict(
         {

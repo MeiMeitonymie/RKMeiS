@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # Dim values
     x_phy_value = 6.6 * 3.086e19 * 2
     c_phy_value = 3.0e8 / 1000.0
-    w_phy_value = 5.0e48
+    w_phy_value = 5.0e48 #emissivity
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
