@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     # Adim values
     dim = 3
-    mesh_nx = 256
-    mesh_ny = 256
-    mesh_nz = 256 if dim == 3 else 0
+    mesh_nx = 2
+    mesh_ny = 2
+    mesh_nz = 2 if dim == 3 else 0
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
 
