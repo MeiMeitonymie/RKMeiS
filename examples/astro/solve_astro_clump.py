@@ -6,6 +6,7 @@ import numpy as np
 from rkms.model import M1, PN
 from rkms.solver import FVTimeMode
 from rkms.common import pprint_dict
+from rkms.mesh import MeshStructured
 
 from astro import AstroFVSolverCL
 
@@ -72,7 +73,7 @@ if __name__ == "__main__":
     dim = 3
     mesh_nx = 512
     mesh_ny = 512
-    mesh_nz = 512
+    mesh_nz = 512 if dim == 3 else 0
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
 
@@ -115,6 +116,21 @@ if __name__ == "__main__":
         header_msg="RESCALING VALUES",
     )
 
+    #Build Mesh
+    mesh = MeshStructured(
+        filename=None,
+        nx=mesh_nx,
+        ny=mesh_ny,
+        nz=mesh_nz,
+        xmin=0.0,
+        xmax=1.0,
+        ymin=0.0,
+        ymax=1.0,
+        zmin=0.0,
+        zmax=1.0,
+        use_periodic_bd=False,
+    )
+
     # Build M1 Model
     if use_m1:
         m = M1(
@@ -150,7 +166,7 @@ if __name__ == "__main__":
 
     # Build solver
     s = AstroFVSolverCL(
-        filename=mesh_file,
+        mesh=mesh,
         model=m,
         time_mode=FVTimeMode.FORCE_ITERMAX_FROM_CFL,
         tmax=False,
@@ -161,7 +177,6 @@ if __name__ == "__main__":
         export_idx=[0, 1, 2],
         export_frq=100,
         use_double=True,
-        use_periodic_bd=False,
         use_chemistry=True,
     )
     
