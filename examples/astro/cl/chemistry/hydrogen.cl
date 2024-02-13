@@ -289,7 +289,7 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
 #ifdef USE_DOUBLE
     wn[id] = max(DBL_EPSILON, N_n / PHY_W0_DIM);
 #else
-    wn[id] = max(FLT_EPSILON, (float)(N_n) / PHY_W0_DIM);
+    wn[id] = max(FLT_EPSILON, (float)(N_n / PHY_W0_DIM));
 #endif
 
     // Update moments > 0
