@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     # Adim values
     dim = 3
-    mesh_nx = 2
-    mesh_ny = 2
-    mesh_nz = 2 if dim == 3 else 0
+    mesh_nx = 128
+    mesh_ny = 128
+    mesh_nz = 128 if dim == 3 else 0
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
 
@@ -172,11 +172,11 @@ if __name__ == "__main__":
         tmax=False,
         cfl=cfl,
         dt=None,
-        iter_max=1200,
+        iter_max=2230,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=100,
-        use_double=False,
+        use_double=True,
         use_chemistry=True,
     )
     
