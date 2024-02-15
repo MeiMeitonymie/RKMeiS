@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0:0"
+os.environ["PYOPENCL_CTX"] = "0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -64,16 +64,16 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = False
-    use_pn = True
+    use_m1 = True
+    use_pn = False
     pn_order = 9
 
 
     # Adim values
     dim = 3
-    mesh_nx = 2
-    mesh_ny = 2
-    mesh_nz = 2 if dim == 3 else 0
+    mesh_nx = 64
+    mesh_ny = 64
+    mesh_nz = 64 if dim == 3 else 0
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
 
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         tmax=False,
         cfl=cfl,
         dt=None,
-        iter_max=1200,
+        iter_max=2230*10,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=100,

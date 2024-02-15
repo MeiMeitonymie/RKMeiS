@@ -331,6 +331,8 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     const double coef =
         2. * (H - L) * PHY_DT_DIM / (3. * nH * (1. + x_n) * PHY_CST_KB);
     const double T_n = max((coef + T) / (1. + x_n - x), 10.);
+    //seuillage test
+    //const double T_n = min(T_n_temp, 10000.);
 
     // Update N (moment 0)
     // Use PHY_W0_DIM to remove physical dimension
