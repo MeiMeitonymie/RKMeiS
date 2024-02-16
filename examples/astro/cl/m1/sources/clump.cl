@@ -21,13 +21,13 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
 #ifdef USE_DOUBLE
     const double t1 = 0.1;
     const double t2 = 0.;
-    const double t3 = 1.;
-    const double t4 = 0.9;
+    const double t3 = 1. * DT; 
+    const double t4 = 0.9 * t3; //bc of M1 approximation
 #else
     const float t1 = 0.1f;
     const float t2 = 0.f;
-    const float t3 = 1.f;
-    const float t4 = 0.9f;
+    const float t3 = 1.f * (float)(DT)*10;
+    const float t4 = 0.9f * t3; //bc of M1 approximation
 #endif
     const real_t t5 = t0 * t1;
 

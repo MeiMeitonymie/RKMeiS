@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     # Adim values
     dim = 3
-    mesh_nx = 128
-    mesh_ny = 128
-    mesh_nz = 128 if dim == 3 else 0
+    mesh_nx = 32
+    mesh_ny = 32
+    mesh_nz = 32 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
@@ -97,15 +97,16 @@ if __name__ == "__main__":
     )
 
     w0_rescale = flux_phy_value / c_phy_value #density
-    w_phy_value = w0_rescale * (dx_dim * dy_dim * dz_dim) / dt_dim #emissivity
-    iter = int(np.floor(w_phy_value / dt_dim))
+    w0_ratedensity = w0_rescale * c_phy_value / dx_dim #rate density
+    #w_phy_value = w0_rescale * (dx_dim * dy_dim * dz_dim) / dt_dim #emissivity
+    #iter = int(np.floor(w_phy_value / dt_dim))
     #w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
 
     pprint_dict(
         {
             "Speed of light 'c'": c_phy_value,
             "Length 'x": x_phy_value,
-            "Photon flux, 'w'": w_phy_value,
+            #"Photon emissivity, 'w'": w_phy_value,
         },
         header_msg="PHYSICAL CONSTANTS",
     )
@@ -173,15 +174,11 @@ if __name__ == "__main__":
         tmax=False,
         cfl=cfl,
         dt=None,
-<<<<<<< HEAD
-        iter_max=2230*10,
-=======
-        iter_max=2230,
->>>>>>> cecadd0438a4b52c8ce2286944479fc0bd2b4e1b
+        iter_max=50000,
         use_muscl=False,
         export_idx=[0, 1, 2],
-        export_frq=100,
-        use_double=True,
+        export_frq=1000,
+        use_double=False,
         use_chemistry=True,
     )
     

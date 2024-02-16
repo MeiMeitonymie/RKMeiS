@@ -69,7 +69,7 @@ void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
 
     // WARNING: Divide by DT (adim) is required to fit test case
     for (int k = 0; k < M; k++) {
-        s[k] = s[k] / DT;
+        s[k] = s[k] /*/ DT*/;
     }
 }
 
