@@ -2,12 +2,12 @@
 #define SRC_CLUMP_CL
 
 #ifdef USE_DOUBLE
-#define SRC_X      (0.)
+#define SRC_X      (0.5)
 #define SRC_Y      (0.5)
 #define SRC_Z      (0.5)
 #define SRC_VACCUM (DBL_EPSILON)
 #else
-#define SRC_X      (0.f)
+#define SRC_X      (0.1f)
 #define SRC_Y      (0.5f)
 #define SRC_Z      (0.5f)
 #define SRC_VACCUM (FLT_EPSILON)
@@ -21,12 +21,12 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
 #ifdef USE_DOUBLE
     const double t1 = 0.1;
     const double t2 = 0.;
-    const double t3 = 1. * DT; 
+    const double t3 = 1. / DT; 
     const double t4 = 0.9 * t3; //bc of M1 approximation
 #else
     const float t1 = 0.1f;
     const float t2 = 0.f;
-    const float t3 = 1.f * (float)(DT)*10;
+    const float t3 = 1.f / (float)(DT);
     const float t4 = 0.9f * t3; //bc of M1 approximation
 #endif
     const real_t t5 = t0 * t1;
@@ -50,10 +50,12 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
 
     const real_t t6 = t4 * DX;
     const real_t t7 = t4 * DY;
+#ifndef IS_2D
     const real_t t8 = t4 * DZ;
+#endif
 
     // Locate cell at the center of the geometry
-    if ((x[0] >= SRC_X) && (x[0] <= DX))  {
+    if ((x[0] >= SRC_X) && (x[0] <= (SRC_X+DX)))  {
         w[0] = t3;
         w[1] = t4;
         w[2] = t2;

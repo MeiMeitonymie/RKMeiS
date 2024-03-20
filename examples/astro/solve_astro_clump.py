@@ -48,11 +48,12 @@ def get_dim_coeff(
     x_phy_value = np.float64(x_phy_value)
     c_phy_value = np.float64(c_phy_value)
 
-    dt_adim = (
+    dt_adim = np.float64(cfl)*np.float64(dx_adim)/np.float64(c_adim)
+    """dt_adim = (
         np.float64(cfl)
         * np.float64(get_hmin(dim, dx_adim, dy_adim, dz_adim))
         / np.float64(c_adim)
-    )
+    )_"""
 
     dx_dim = dx_adim * x_phy_value
     dy_dim = dy_adim * x_phy_value
@@ -66,14 +67,14 @@ if __name__ == "__main__":
     # Model
     use_m1 = True
     use_pn = False
-    pn_order = 9
+    pn_order = 5
 
 
     # Adim values
     dim = 3
-    mesh_nx = 32
-    mesh_ny = 32
-    mesh_nz = 32 if dim == 3 else 0
+    mesh_nx = 64*2
+    mesh_ny = 64
+    mesh_nz = 64 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
@@ -81,8 +82,7 @@ if __name__ == "__main__":
     # Dim values
     x_phy_value = 6.6 * 3.086e19 
     c_phy_value = 3.0e8 
-    flux_phy_value = 1e6*1e4 #flux in cgs brought back in SI
-    #w_phy_value = flux_phy_value * dx_dim**2
+    flux_phy_value = 1e10 #flux in cgs brought back in SI
     
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
@@ -96,17 +96,15 @@ if __name__ == "__main__":
         c_phy_value=c_phy_value,
     )
 
-    w0_rescale = flux_phy_value / c_phy_value #density
-    w0_ratedensity = w0_rescale * c_phy_value / dx_dim #rate density
-    #w_phy_value = w0_rescale * (dx_dim * dy_dim * dz_dim) / dt_dim #emissivity
-    #iter = int(np.floor(w_phy_value / dt_dim))
-    #w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
+    w_phy_value = flux_phy_value * dx_dim**2
+    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
+    iter = int(np.floor(w_phy_value / dt_dim))
 
     pprint_dict(
         {
             "Speed of light 'c'": c_phy_value,
             "Length 'x": x_phy_value,
-            #"Photon emissivity, 'w'": w_phy_value,
+            "Photon emissivity, 'w'": w_phy_value,
         },
         header_msg="PHYSICAL CONSTANTS",
     )
@@ -135,6 +133,7 @@ if __name__ == "__main__":
 
     # Build M1 Model
     if use_m1:
+        print("Using M1")
         m = M1(
             dim,
             cl_src_file="./cl/m1/main_clump.cl",
@@ -149,6 +148,7 @@ if __name__ == "__main__":
         )
 
     if use_pn:
+        print("Using P"+str(pn_order))
         m = PN(
             pn_order,
             dim,
@@ -166,6 +166,8 @@ if __name__ == "__main__":
             },
         )
 
+    nb_iter=75000
+    export_freq = 500
     # Build solver
     s = AstroFVSolverCL(
         mesh=mesh,
@@ -174,14 +176,15 @@ if __name__ == "__main__":
         tmax=False,
         cfl=cfl,
         dt=None,
-        iter_max=50000,
+        iter_max=nb_iter,
         use_muscl=False,
         export_idx=[0, 1, 2],
-        export_frq=1000,
-        use_double=False,
+        export_frq=export_freq,
+        use_double=True,
         use_chemistry=True,
     )
-    
-
+    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
+    print("Number of iterations :",nb_iter)
+    print("Export frequency :",export_freq)
     # Run solver
     s.run()
