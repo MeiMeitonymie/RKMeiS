@@ -166,7 +166,7 @@ if __name__ == "__main__":
             },
         )
 
-    nb_iter=1000
+    nb_iter=75000
     export_freq = 500
     # Build solver
     s = AstroFVSolverCL(
