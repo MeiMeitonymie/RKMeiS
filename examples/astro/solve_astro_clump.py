@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0:0"
+os.environ["PYOPENCL_CTX"] = "0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -122,7 +122,7 @@ if __name__ == "__main__":
         nx=mesh_nx,
         ny=mesh_ny,
         nz=mesh_nz,
-        xmin=0.0,
+        xmin=-1.0,
         xmax=1.0,
         ymin=0.0,
         ymax=1.0,
@@ -166,7 +166,7 @@ if __name__ == "__main__":
             },
         )
 
-    nb_iter=75000
+    nb_iter=1000
     export_freq = 500
     # Build solver
     s = AstroFVSolverCL(

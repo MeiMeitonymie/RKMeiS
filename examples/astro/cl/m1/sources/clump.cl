@@ -2,12 +2,12 @@
 #define SRC_CLUMP_CL
 
 #ifdef USE_DOUBLE
-#define SRC_X      (0.5)
+#define SRC_X      (0.0)
 #define SRC_Y      (0.5)
 #define SRC_Z      (0.5)
 #define SRC_VACCUM (DBL_EPSILON)
 #else
-#define SRC_X      (0.1f)
+#define SRC_X      (0.0f)
 #define SRC_Y      (0.5f)
 #define SRC_Z      (0.5f)
 #define SRC_VACCUM (FLT_EPSILON)
