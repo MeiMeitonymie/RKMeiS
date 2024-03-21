@@ -269,7 +269,8 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh,
     const real_t d =
         (xyz[0] - src_x) * (xyz[0] - src_x) + (xyz[1] - src_y) * (xyz[1] - src_y);
 #else
-    const real_t d = (xyz[0] - src_x) * (xyz[0] - src_x) +
+    //WARNING: Factor is here to compensate dilatation of x axis
+    const real_t d = (xyz[0] - src_x) * (xyz[0] - src_x) *4 +
                      (xyz[1] - src_y) * (xyz[1] - src_y) +
                      (xyz[2] - src_z) * (xyz[2] - src_z);
 #endif

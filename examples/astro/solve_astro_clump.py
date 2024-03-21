@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -65,8 +65,8 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = False
-    use_pn = True
+    use_m1 = True
+    use_pn = False
     pn_order = 9
 
 
