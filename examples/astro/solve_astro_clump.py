@@ -88,7 +88,7 @@ if __name__ == "__main__":
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
         cfl,
-        dx_adim=1.0 / mesh_nx,
+        dx_adim=2.0 / mesh_nx,
         dy_adim=1.0 / mesh_ny,
         dz_adim=1.0 / mesh_ny,
         c_adim=1.0,
