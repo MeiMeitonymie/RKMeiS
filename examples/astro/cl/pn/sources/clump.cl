@@ -2,14 +2,14 @@
 #define SRC_CLUMP_CL
 
 #ifdef USE_DOUBLE
-#define SRC_X      (0.0)
+#define SRC_X      (0.5)
 #define SRC_Y      (0.5)
-#define SRC_Z      (0.5)
+#define SRC_Z      (0.0)
 #define SRC_VACCUM (DBL_EPSILON)
 #else
-#define SRC_X      (0.0f)
+#define SRC_X      (0.5f)
 #define SRC_Y      (0.5f)
-#define SRC_Z      (0.5f)
+#define SRC_Z      (0.0f)
 #define SRC_VACCUM (FLT_EPSILON)
 #endif
 
@@ -50,7 +50,9 @@ static inline void pn_src_clump(const real_t t, const real_t x[DIM],
     const real_t t8 = t4 * DZ;
 
     // Locate cell at the center of the geometry
+    //if ((x[0] >= SRC_X) && (x[0] <= (SRC_X+DX)) && (x[1] >= SRC_Y) && (x[1] <= (SRC_Y+DY)) && (x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
     if ((x[0] >= SRC_X) && (x[0] <= (SRC_X+DX)))  {
+
         pn_clump_value(w);
 
     }

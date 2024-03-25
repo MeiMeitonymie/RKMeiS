@@ -952,7 +952,7 @@ def pn_build_c99_beam_code(order: int, src_lst: list[dict]):
 
 if __name__ == "__main__":
     # PN order
-    order = 1
+    order = 11
 
     # Velocity part intensity
     intensity = 1.0
@@ -990,7 +990,7 @@ for order in [1, 3, 5, 7, 9, 11]:
             # Beam spatial tickness
             "sigma_xyz": 0.005,
         },
-        {
+        """{
             "name": "beam_1",
             "values": pn_get_src_proj(
                 order,
@@ -1006,7 +1006,7 @@ for order in [1, 3, 5, 7, 9, 11]:
             "z": 0.25,
             # Beam spatial tickness
             "sigma_xyz": 0.005,
-        },
+        },"""
     ]
 
     beam_code += f"#ifdef USE_SPHERICAL_HARMONICS_P{order}\n"

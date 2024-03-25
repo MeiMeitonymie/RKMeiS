@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -72,9 +72,9 @@ if __name__ == "__main__":
 
     # Adim values
     dim = 3
-    mesh_nx = 64*2
+    mesh_nx = 64
     mesh_ny = 64
-    mesh_nz = 64 if dim == 3 else 0
+    mesh_nz = 64*2 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
     cfl = 0.8
@@ -88,9 +88,9 @@ if __name__ == "__main__":
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
         cfl,
-        dx_adim=2.0 / mesh_nx,
+        dx_adim=1.0 / mesh_nx,
         dy_adim=1.0 / mesh_ny,
-        dz_adim=1.0 / mesh_ny,
+        dz_adim=2.0 / mesh_ny,
         c_adim=1.0,
         x_phy_value=x_phy_value,
         c_phy_value=c_phy_value,
@@ -122,11 +122,11 @@ if __name__ == "__main__":
         nx=mesh_nx,
         ny=mesh_ny,
         nz=mesh_nz,
-        xmin=-1.0,
+        xmin=0.0,
         xmax=1.0,
         ymin=0.0,
         ymax=1.0,
-        zmin=0.0,
+        zmin=-1.0,
         zmax=1.0,
         use_periodic_bd=False,
     )
@@ -166,8 +166,8 @@ if __name__ == "__main__":
             },
         )
 
-    nb_iter=75000
-    export_freq = 500
+    nb_iter=60000
+    export_freq = 1000
     # Build solver
     s = AstroFVSolverCL(
         mesh=mesh,
