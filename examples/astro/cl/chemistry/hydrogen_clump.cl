@@ -258,7 +258,7 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh,
     const float src_x = 0.5f;
     const float src_y = 0.5f;
     //const float src_z = 0.758f;
-    const double src_z = 0.25;
+    const double src_z = 0.25f;
     const float src_r = 0.121f;
     const float xi_0 = 1.2e-3f;
     const float nh_0 = 200.f;

@@ -36,6 +36,9 @@ if __name__ == "__main__":
     mesh_ny = 65
     mesh_nz = 65 if dim == 3 else 0
 
+    mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
+
+
     mesh = MeshStructured(
         filename=None,
         nx=mesh_nx,

@@ -179,8 +179,8 @@ if __name__ == "__main__":
             },
         )
 
-    nb_iter=1000
-    export_freq = 100
+    nb_iter=60000
+    export_freq = 1000
     # Build solver
     s = AstroFVSolverCL(
         mesh=mesh,
@@ -195,7 +195,6 @@ if __name__ == "__main__":
         export_frq=export_freq,
         use_double=True,
         use_chemistry=True,
-        use_filtering = True
     )
     print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
     print("Number of iterations :",nb_iter)

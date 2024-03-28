@@ -17,7 +17,6 @@ class AstroFVSolverCL(FVSolverCl):
     ) -> None:
         super().__init__(*args, **kwargs)
         self.use_chemistry = use_chemistry
-        #self.use_filtering = use_filtering
 
     def _halloc(self) -> None:
         # Solver host buffers are allocated by FVSolverCl class

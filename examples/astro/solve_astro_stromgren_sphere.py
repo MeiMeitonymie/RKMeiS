@@ -86,6 +86,17 @@ if __name__ == "__main__":
     c_phy_value = 3.0e8 / 1000.0
     w_phy_value = 5.0e48 #emissivity
 
+    # FILTERING
+    """
+    Filtering types:
+    0 = no filtering
+    1 = Lancos
+    2 = Splines
+    3 = Exp
+    """
+    sig_value = 0.16
+    filter_type = 0
+
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
         cfl,
@@ -162,6 +173,8 @@ if __name__ == "__main__":
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
+                "__SIG__":sig_value,
+                "__FILTER__":filter_type,
             },
         )
 
@@ -171,7 +184,7 @@ if __name__ == "__main__":
         mesh=mesh,
         model=m,
         time_mode=FVTimeMode.FORCE_ITERMAX_FROM_CFL,
-        tmax=None,
+        tmax=False,
         cfl=cfl,
         dt=None,
         iter_max=nb_iter,
@@ -185,5 +198,10 @@ if __name__ == "__main__":
     print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
     print("Number of iterations :",nb_iter)
     print("Export frequency :",export_freq)
+    print("Export frequency :",export_freq)
+    if filter_type==0:
+        print("No Filtering")
+    else:
+        print("Filtering coef: ",sig_value)
     # Run solver
     s.run()
