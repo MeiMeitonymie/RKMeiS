@@ -246,7 +246,8 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh,
 #ifdef USE_DOUBLE
     const double src_x = 0.5;
     const double src_y = 0.5;
-    const double src_z = 0.758;
+    //const double src_z = 0.758;
+    const double src_z = 0.25;
     const double src_r = 0.121;
     const double xi_0 = 1.2e-3;
     const double nh_0 = 200.;
@@ -256,7 +257,8 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh,
 #else
     const float src_x = 0.5f;
     const float src_y = 0.5f;
-    const float src_z = 0.758f;
+    //const float src_z = 0.758f;
+    const double src_z = 0.25;
     const float src_r = 0.121f;
     const float xi_0 = 1.2e-3f;
     const float nh_0 = 200.f;

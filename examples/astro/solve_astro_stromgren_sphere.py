@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -128,6 +128,7 @@ if __name__ == "__main__":
 
     # Build M1 Model
     if use_m1:
+        print("Using M1")
         m = M1(
             dim,
             cl_src_file="./cl/m1/main_stromgren_sphere.cl",
@@ -142,6 +143,7 @@ if __name__ == "__main__":
         )
 
     if use_pn:
+        print("Using P"+str(pn_order))
         m = PN(
             pn_order,
             dim,
@@ -159,6 +161,8 @@ if __name__ == "__main__":
             },
         )
 
+    nb_iter=5000
+    export_freq = 100
     s = AstroFVSolverCL(
         mesh=mesh,
         model=m,
@@ -166,13 +170,16 @@ if __name__ == "__main__":
         tmax=None,
         cfl=cfl,
         dt=None,
-        iter_max=5000,
+        iter_max=nb_iter,
         use_muscl=False,
         export_idx=[0, 1, 2],
-        export_frq=100,
-        use_double=False,
+        export_frq=export_freq,
+        use_double=True,
         use_chemistry=True,
     )
 
+    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
+    print("Number of iterations :",nb_iter)
+    print("Export frequency :",export_freq)
     # Run solver
     s.run()
