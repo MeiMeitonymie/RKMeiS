@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0:0"
+os.environ["PYOPENCL_CTX"] = "0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -84,6 +84,17 @@ if __name__ == "__main__":
     c_phy_value = 3.0e8 
     flux_phy_value = 1e10 #flux in cgs brought back in SI
     
+    # FILTERING
+    """
+    Filtering types:
+    0 = no filtering
+    1 = Lancos
+    2 = Splines
+    3 = Exp
+    """
+    sig_value = 0.16
+    filter_type = 0
+
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -163,11 +174,13 @@ if __name__ == "__main__":
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
+                "__SIG__":sig_value,
+                "__FILTER__":filter_type,
             },
         )
 
-    nb_iter=60000
-    export_freq = 1000
+    nb_iter=1000
+    export_freq = 100
     # Build solver
     s = AstroFVSolverCL(
         mesh=mesh,
@@ -182,9 +195,14 @@ if __name__ == "__main__":
         export_frq=export_freq,
         use_double=True,
         use_chemistry=True,
+        use_filtering = True
     )
     print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
     print("Number of iterations :",nb_iter)
     print("Export frequency :",export_freq)
+    if filter_type==0:
+        print("No Filtering")
+    else:
+        print("Filtering coef: ",sig_value)
     # Run solver
     s.run()

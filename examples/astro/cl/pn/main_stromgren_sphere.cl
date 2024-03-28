@@ -16,6 +16,8 @@
 #undef IS_2D
 #define DZ __DZ__
 #endif
+
+
 // KEEP DEFINE ABOVE
 
 #include <solver/muscl_finite_volume.cl>
@@ -24,6 +26,30 @@
 #define PHY_C_DIM  __PHY_C_DIM__
 #define PHY_DT_DIM __PHY_DT_DIM__
 #define PHY_W0_DIM __PHY_W0_DIM__
+#define SIG __SIG__
+#define FILTER __FILTER__
+
+#if FILTER != 0
+#define FILTERING
+#else
+#undef FILTERING
+#endif
+
+#if FILTER == 1
+#define LANCOS
+#undef SPLINES
+#undef EXPO
+#endif
+#if FILTER == 2
+#undef LANCOS
+#define SPLINES
+#undef EXPO
+#endif
+#if FILTER == 2
+#undef LANCOS
+#undef SPLINES
+#define EXPO
+#endif
 
 #ifdef USE_SPHERICAL_HARMONICS_P1
 #include "numfluxes/p1.cl"

@@ -60,9 +60,9 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
 
         w[0] = t3;
         w[1] = t2;
-        w[2] = t4;
+        w[2] = t2;
 #ifndef IS_2D
-        w[3] = t2;
+        w[3] = t4;
 
         //const double test = sqrt(w[1]*w[1] + w[2]*w[2] + w[3] * w[3]) / w[0];
         //printf("\n%lf", test);

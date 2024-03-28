@@ -11,6 +11,31 @@
 #define DIM    __DIM__
 #define C_WAVE __C_WAVE__
 
+#define SIG __SIG__
+#define FILTER __FILTER__
+
+#if FILTER != 0
+#define FILTERING
+#else
+#undef FILTERING
+#endif
+
+#if FILTER == 1
+#define LANCOS
+#undef SPLINES
+#undef EXPO
+#endif
+#if FILTER == 2
+#undef LANCOS
+#define SPLINES
+#undef EXPO
+#endif
+#if FILTER == 2
+#undef LANCOS
+#undef SPLINES
+#define EXPO
+#endif
+
 #if DIM == 2
 #define IS_2D
 #else

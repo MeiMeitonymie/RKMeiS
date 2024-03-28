@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0:0"
+os.environ["PYOPENCL_CTX"] = "0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -48,11 +48,13 @@ def get_dim_coeff(
     x_phy_value = np.float64(x_phy_value)
     c_phy_value = np.float64(c_phy_value)
 
-    dt_adim = (
+    dt_adim = np.float64(cfl)*np.float64(dx_adim)/np.float64(c_adim)
+
+    """dt_adim = (
         np.float64(cfl)
         * np.float64(get_hmin(dim, dx_adim, dy_adim, dz_adim))
         / np.float64(c_adim)
-    )
+    )"""
 
     dx_dim = dx_adim * x_phy_value
     dy_dim = dy_adim * x_phy_value
@@ -64,8 +66,8 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = False
-    use_pn = True
+    use_m1 = True
+    use_pn = False
     pn_order = 3
 
     # CFL
@@ -77,19 +79,7 @@ if __name__ == "__main__":
     mesh_ny = 65
     mesh_nz = 65 if dim == 3 else 0
 
-    mesh = MeshStructured(
-        filename=None,
-        nx=mesh_nx,
-        ny=mesh_ny,
-        nz=mesh_nz,
-        xmin=0.0,
-        xmax=1.0,
-        ymin=0.0,
-        ymax=1.0,
-        zmin=0.0,
-        zmax=1.0,
-        use_periodic_bd=False,
-    )
+    mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
     # Dim values
     x_phy_value = 6.6 * 3.086e19 * 2
@@ -124,6 +114,20 @@ if __name__ == "__main__":
             "Photon density 'w0'": w0_rescale,
         },
         header_msg="RESCALING VALUES",
+    )
+
+    mesh = MeshStructured(
+        filename=None,
+        nx=mesh_nx,
+        ny=mesh_ny,
+        nz=mesh_nz,
+        xmin=0.0,
+        xmax=1.0,
+        ymin=0.0,
+        ymax=1.0,
+        zmin=0.0,
+        zmax=1.0,
+        use_periodic_bd=False,
     )
 
     # Build M1 Model
