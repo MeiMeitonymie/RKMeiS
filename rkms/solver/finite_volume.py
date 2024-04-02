@@ -319,6 +319,8 @@ class FVSolverCl(SolverCl):
 
         if self.use_double:
             opts.append("-D USE_DOUBLE")
+        # else:
+        #     opts.append("-cl-single-precision-constant")
 
         # Add solver include dirs
         opts += ["-I {}".format(dir) for dir in self.cl_include_dirs]
