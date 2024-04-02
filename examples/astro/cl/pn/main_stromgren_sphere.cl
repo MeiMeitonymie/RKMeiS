@@ -108,7 +108,16 @@ void model_flux_num(const real_t wL[M], const real_t wR[M],
 void model_flux_num_bd(const real_t wL[M], const real_t wR[M],
                        const real_t vn[DIM], real_t flux[M])
 {
-    num_flux_rus(wL, wL, vn, flux);
+    real_t w[M];
+    
+    for (int k = 0; k < M; k++) {
+        w[k] = 1e-8F;
+    }
+
+    
+    num_flux_rus(wL, w, vn, flux);
+    
+    //num_flux_rus(wL, wL, vn, flux);
 }
 
 
