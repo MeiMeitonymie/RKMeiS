@@ -186,7 +186,7 @@ if __name__ == "__main__":
         mesh=mesh,
         model=m,
         time_mode=FVTimeMode.FORCE_ITERMAX_FROM_CFL,
-        tmax=False,
+        tmax=None,
         cfl=cfl,
         dt=None,
         iter_max=nb_iter,

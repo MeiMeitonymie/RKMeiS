@@ -297,7 +297,7 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     // Use PHY_W0_DIM to give physical dimension
     const double N = (double)(wn[id] * PHY_W0_DIM);
     const double N_pos = max(0., N);
-    
+
     const double x = (double)xi[id];
     const double T = (double)temp[id];
     const double nH = (double)nh[id];
@@ -326,9 +326,6 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     const double c1 = bt * t1 * (x_n - t5);
     const double c2 = -al_b * t1 * t5;
     const double N_n = N + c1 + c2 + -nH * (x_n - x);
-    
-    // Patch
-    // const double N_n = fabs(N) + c1 + c2 + -nH * (x_n - x);
 
     // Compute T
     const double L = cooling_rate_density(T, nH, x_n);
@@ -340,23 +337,14 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
 
     // Update N (moment 0)
     // Use PHY_W0_DIM to remove physical dimension
-    
-    // Cap small new density to +-DBL_EPSILON or +-FLT_EPISLON
 #ifdef USE_DOUBLE
-    wn[id] = copysign(max(DBL_EPSILON, fabs(N_n) / PHY_W0_DIM),N_n);
+    wn[id] = max(DBL_EPSILON, N_n / PHY_W0_DIM);
 #else
-    wn[id] = copysign(max(FLT_EPSILON, (float)(fabs(N_n) / PHY_W0_DIM)), (float)N_n);
-#endif
-   
-   // Cap inversion of old density to +-DBL_EPSILON or +-FLT_EPISLON
-#ifdef USE_DOUBLE
-    const double t6 =1. /  copysign(max(DBL_EPSILON, fabs(N)), N);
-#else
-    const float t6 = 1.f / copysign(max(FLT_EPSILON, fabs((float)N)), (float)N);
+    wn[id] = max(FLT_EPSILON, (float)(N_n / PHY_W0_DIM));
 #endif
 
     // Update moments > 0
-    const real_t ratio = (real_t)(N_n * t6);
+    const real_t ratio = (real_t)(N_n / N);
     for (int k = 1; k < M; k++) {
         long imem = id + k * NGRID;
         wn[imem] = wn[imem] * ratio;

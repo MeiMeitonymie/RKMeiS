@@ -226,7 +226,7 @@ double get_root_newton_raphson(const double a, const double b, const double c,
     return x;
 }
 
-__kernel void chem_init_sol(__global real_t *nh, __global real_t *temp,
+__kernel void chem_init_sol(__global real_t *x, __global real_t *nh, __global real_t *temp,
                             __global real_t *xi)
 {
     // Current cell ID

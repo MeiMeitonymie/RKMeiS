@@ -73,9 +73,20 @@ if __name__ == "__main__":
 
     # Build Mesh
     dim = 3
-    mesh_nx = 128
-    mesh_ny = 128
-    mesh_nz = 128 if dim == 3 else 0
+    mesh_nx = 64
+    mesh_ny = 64
+    mesh_nz = 64 if dim == 3 else 0
+
+    # FILTERING
+    """
+    Filtering types:
+    0 = no filtering
+    1 = Lancos
+    2 = Splines
+    3 = Exp
+    """
+    sig_value = 0.16
+    filter_type = 0
 
     mesh = MeshStructured(
         filename=None,
@@ -156,6 +167,8 @@ if __name__ == "__main__":
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
+                "__SIG__":sig_value,
+                "__FILTER__":filter_type,
             },
         )
 
@@ -170,6 +183,8 @@ if __name__ == "__main__":
         "nh": read_astro_file_bin("density.bin", mesh_nx, mesh_ny, mesh_nz),
     }
 
+    nb_iter=5000
+    export_freq = 100
     s = AstroFVSolverCL(
         mesh=mesh,
         model=m,
@@ -177,14 +192,22 @@ if __name__ == "__main__":
         tmax=None,
         cfl=cfl,
         dt=None,
-        iter_max=5000,
+        iter_max=nb_iter,
         use_muscl=False,
         export_idx=[0, 1, 2],
-        export_frq=100,
+        export_frq=export_freq,
         use_double=False,
         use_chemistry=True,
         init_buffer_map=init_buffer_map,
     )
 
+    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
+    print("Number of iterations :",nb_iter)
+    print("Export frequency :",export_freq)
+    print("Export frequency :",export_freq)
+    if filter_type==0:
+        print("No Filtering")
+    else:
+        print("Filtering coef: ",sig_value)
     # Run solver
     s.run()
