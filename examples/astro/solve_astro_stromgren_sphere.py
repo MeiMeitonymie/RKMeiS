@@ -66,24 +66,25 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = False
-    use_pn = True
-    pn_order = 9
+    use_m1 = True
+    use_pn = False
+    pn_order = 5
 
     # CFL
     cfl = 0.8
 
     # Build Mesh
     dim = 3
-    mesh_nx = 65
-    mesh_ny = 65
-    mesh_nz = 65 if dim == 3 else 0
+    mesh_nx = 64
+    mesh_ny = 64
+    mesh_nz = 64 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
     # Dim values
-    x_phy_value = 6.6 * 3.086e19 * 2
-    c_phy_value = 3.0e8 / 1000.0
+    cdiv = 1.0
+    x_phy_value = 6.6 * 3.086e19 * 2 #*2
+    c_phy_value = 3.0e8 / cdiv
     w_phy_value = 5.0e48 #emissivity
 
     # FILTERING
@@ -109,7 +110,10 @@ if __name__ == "__main__":
     )
 
     iter = int(np.floor(w_phy_value / dt_dim))
-    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
+    if mesh_nx%2==0:
+        w0_rescale = dt_dim * w_phy_value / (2*dx_dim * 2*dy_dim * 2*dz_dim)
+    else:
+        w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
 
     pprint_dict(
         {
@@ -179,9 +183,13 @@ if __name__ == "__main__":
         )
 
     #nb_iter=5000
-    endt = 4e6 #yrs
+    endt = 4*122.34e6 #*2#yrs
     nb_iter = int(endt*3600*24*365/dt_dim)
-    export_freq = int(nb_iter/20)
+    if nb_iter>200:
+        export_freq = int(nb_iter/40)
+    else:
+        export_freq=1
+
     s = AstroFVSolverCL(
         mesh=mesh,
         model=m,

@@ -350,16 +350,18 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
    
    // Cap inversion of old density to +-DBL_EPSILON or +-FLT_EPISLON
 #ifdef USE_DOUBLE
-    const double t6 =1. /  copysign(max(DBL_EPSILON, fabs(N)), N);
+    //const double t6 =1. /  copysign(max(DBL_EPSILON, fabs(N)), N);
+    const double t6 = 1. / (1. + t2*nH*PHY_DT_DIM*(1. - x_n));
 #else
-    const float t6 = 1.f / copysign(max(FLT_EPSILON, fabs((float)N)), (float)N);
+    //const float t6 = 1.f / copysign(max(FLT_EPSILON, fabs((float)N)), (float)N);
+    const float t6 = 1.f / (1.f + (float)t2*nH*PHY_DT_DIM*(1.f - (float)x_n));
 #endif
 
     // Update moments > 0
-    const real_t ratio = (real_t)(N_n * t6);
+    //const real_t ratio = (real_t)(N_n * t6);
     for (int k = 1; k < M; k++) {
         long imem = id + k * NGRID;
-        wn[imem] = wn[imem] * ratio;
+        wn[imem] = wn[imem] * t6;
     }
 
     // Update x

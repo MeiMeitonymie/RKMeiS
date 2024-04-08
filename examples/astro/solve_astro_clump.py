@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Model
     use_m1 = False
     use_pn = True
-    pn_order = 9
+    pn_order = 3
 
 
     # Adim values
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     3 = Exp
     """
     sig_value = 0.16
-    filter_type = 0
+    filter_type = 1
 
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
@@ -181,7 +181,10 @@ if __name__ == "__main__":
 
     endt = 15e6 #yrs
     nb_iter = int(endt*3600*24*365/dt_dim)
-    export_freq = int(nb_iter/20)
+    if nb_iter>200:
+        export_freq = int(nb_iter/40)
+    else:
+        export_freq=1
     # Build solver
     s = AstroFVSolverCL(
         mesh=mesh,

@@ -51,20 +51,22 @@ void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
 void model_flux_num(const real_t wL[M], const real_t wR[M],
                     const real_t vn[DIM], real_t flux[M])
 {
+    //const double test = sqrt(wL[1]*wL[1] + wL[2]*wL[2] + wL[3] * wL[3]) / wL[0];
+    //printf("\n%lf", test);
     m1_num_flux_rusanov(wL, wR, vn, flux);
 }
 
 void model_flux_num_bd(const real_t wL[M], const real_t wR[M],
                        const real_t vn[DIM], real_t flux[M])
 {
-    real_t w[M];
+    /*real_t w[M];
     
     for (int k = 0; k < M; k++) {
         w[k] = 1e-8F;
     }
 
     
-    m1_num_flux_rusanov(wL, w, vn, flux);    
-    //m1_num_flux_rusanov(wL, wL, vn, flux);
+    m1_num_flux_rusanov(wL, w, vn, flux);  */  
+    m1_num_flux_rusanov(wL, wL, vn, flux);
 }
 #endif
