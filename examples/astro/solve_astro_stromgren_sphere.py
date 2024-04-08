@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0:0"
+os.environ["PYOPENCL_CTX"] = "0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
     # Dim values
-    cdiv = 1.0
+    cdiv = 1000.0
     x_phy_value = 6.6 * 3.086e19 * 2 #*2
     c_phy_value = 3.0e8 / cdiv
     w_phy_value = 5.0e48 #emissivity

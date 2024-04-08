@@ -239,7 +239,7 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh, __global re
     temp[id] = (real_t)10000.;
     
     // TO COMMENT IF MAP IS LOADED
-    nh[id] = (real_t)1e4;
+    nh[id] = (real_t)1e3;
 
 }
 
@@ -313,7 +313,7 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
 #endif
 
     // Update moments > 0
-    const real_t ratio = (real_t)(N_n * t6);
+    //const real_t ratio = (real_t)(N_n * t6);
     for (int k = 1; k < M; k++) {
         long imem = id + k * NGRID;
         wn[imem] = wn[imem] * t6;

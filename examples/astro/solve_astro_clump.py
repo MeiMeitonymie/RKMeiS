@@ -92,7 +92,7 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 0.16
+    sig_value = 1e-5
     filter_type = 1
 
 
