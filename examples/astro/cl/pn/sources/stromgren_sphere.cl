@@ -55,5 +55,8 @@ static inline void pn_src_stromgren_sphere(const real_t t, const real_t x[DIM],
             w[k] = t2;
         }
     }
+    #ifdef FILTERING
+    Pn_filter(w);
+    #endif
 }
 #endif

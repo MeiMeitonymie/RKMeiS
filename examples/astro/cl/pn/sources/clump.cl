@@ -59,10 +59,10 @@ static inline void pn_src_clump(const real_t t, const real_t x[DIM],
     //if ((x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
 
         pn_clump_value(w);
-        #ifdef FILTERING
-        Pn_filter(w);
-        #endif
 
     }
+    #ifdef FILTERING
+    Pn_filter(w);
+    #endif
 }
 #endif

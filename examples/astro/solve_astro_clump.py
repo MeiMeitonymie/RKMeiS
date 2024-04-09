@@ -92,8 +92,8 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 1e-5
-    filter_type = 1
+    sig_value = 1e-6
+    filter_type = 2
 
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
