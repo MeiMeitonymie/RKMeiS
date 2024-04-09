@@ -15,9 +15,6 @@
 
 #include "./clump_values.cl"
 
-#ifdef FILTERING
-#include "./filtering.cl"
-#endif
 
 static inline void pn_src_clump(const real_t t, const real_t x[DIM],
                                            real_t w[M])
@@ -61,8 +58,5 @@ static inline void pn_src_clump(const real_t t, const real_t x[DIM],
         pn_clump_value(w);
 
     }
-    #ifdef FILTERING
-    Pn_filter(w);
-    #endif
 }
 #endif

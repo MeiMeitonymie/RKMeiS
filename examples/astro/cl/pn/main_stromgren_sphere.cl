@@ -51,6 +51,10 @@
 #define EXPO
 #endif
 
+#ifdef FILTERING
+#include "./filtering.cl"
+#endif
+
 #ifdef USE_SPHERICAL_HARMONICS_P1
 #include "numfluxes/p1.cl"
 #endif
@@ -103,6 +107,10 @@ void model_flux_num(const real_t wL[M], const real_t wR[M],
                     const real_t vn[DIM], real_t flux[M])
 {
     num_flux_rus(wL, wR, vn, flux);
+
+    #ifdef FILTERING
+    Pn_filter(wL);
+    #endif
 }
 
 void model_flux_num_bd(const real_t wL[M], const real_t wR[M],
