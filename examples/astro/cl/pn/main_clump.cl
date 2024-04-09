@@ -50,7 +50,7 @@
 #endif
 
 #ifdef FILTERING
-#include "./filtering.cl"
+#include "sources/filtering.cl"
 #endif
 
 #ifdef USE_SPHERICAL_HARMONICS_P1

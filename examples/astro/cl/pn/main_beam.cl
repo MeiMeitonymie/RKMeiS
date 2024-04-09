@@ -37,7 +37,7 @@
 #endif
 
 #ifdef FILTERING
-#include "./filtering.cl"
+#include "sources/filtering.cl"
 #endif
 
 #if DIM == 2
