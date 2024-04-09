@@ -95,6 +95,10 @@ void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
 {
     pn_src_clump(t, x, s);
 
+    #ifdef FILTERING
+    Pn_filter(wn,s);
+    #endif
+
     // WARNING: Divide by DT (adim) is required to fit test case
     for (int k = 0; k < M; k++) {
         s[k] = s[k] /*/ DT*/;
@@ -106,9 +110,6 @@ void model_flux_num(const real_t wL[M], const real_t wR[M],
 {
     num_flux_rus(wL, wR, vn, flux);
 
-    #ifdef FILTERING
-    Pn_filter(wL);
-    #endif
 }
 
 void model_flux_num_bd(const real_t wL[M], const real_t wR[M],
