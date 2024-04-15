@@ -93,4 +93,5 @@ env*/
 
 # Examples
 ./examples/mesh/*
-./examples/astro/res_*
+./examples/astro/res_*/*
+./examples/astro/final_*/*
