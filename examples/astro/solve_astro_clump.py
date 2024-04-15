@@ -179,7 +179,7 @@ if __name__ == "__main__":
             },
         )
 
-    endt = 5e6 #yrs
+    endt = 1e5 #yrs
     nb_iter = int(endt*3600*24*365/dt_dim)
     #nb_iter = 2
     if nb_iter>200:
