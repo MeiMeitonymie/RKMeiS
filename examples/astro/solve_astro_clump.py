@@ -92,7 +92,7 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 1e-6
+    sig_value = 0.16
     filter_type = 1
 
 
@@ -179,8 +179,9 @@ if __name__ == "__main__":
             },
         )
 
-    endt = 1e5 #yrs
+    endt = 5e6 #yrs
     nb_iter = int(endt*3600*24*365/dt_dim)
+    #nb_iter = 2
     if nb_iter>200:
         export_freq = int(nb_iter/40)
     else:

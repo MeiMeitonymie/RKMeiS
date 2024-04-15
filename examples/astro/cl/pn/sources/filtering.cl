@@ -32,7 +32,8 @@ double filter_func(double v)
 #ifdef EXPO
 double filter_func(double v)
 {
-    return(exp(log(0.0000000000001)*pow(v,4.)));
+    double dv = v*v;
+    return(exp(log(0.0000000000001)*dv*dv));
 }
 #endif
 
@@ -63,13 +64,15 @@ void Pn_filter(const real_t w[M], real_t s[M])
     //int l = (int)pow(11.+1.,2.);
     #endif
 
+    int k=0;
     for (int i=1;i<=(int)L;i++)
     {
         for (int j=-(int)L;j<=(int)L;j++)
         {
+            k+=1;
             //printf("pre %lf ",s[i]);
-            s[i]= s[i] - SIG * w[i]* log(filter_func((double)i/(L+1.)))/log(filter_func(L/(L+1.)));
-            //printf("post %lf \n",s[i]);
+            s[k]= s[k] - SIG * w[k]* log(filter_func((double)i/(L+1.)))/log(filter_func(L/(L+1.)));
+            //printf("post %lf \n",log(filter_func((double)i/(L+1.)))/log(filter_func(L/(L+1.))));
             /*
             printf("filter 1 %lf ",log(filter_func((double)i/(L+1.))));
             printf("value %lf ",(double)i/(L+1.));
