@@ -92,6 +92,6 @@ env*/
 ./data/mesh/*
 
 # Examples
-./examples/mesh/*
-./examples/astro/res_*/*
-./examples/astro/final_*/*
+./examples/mesh/
+./examples/astro/res_*/
+./examples/astro/final_*/
