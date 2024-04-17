@@ -406,6 +406,9 @@ class FVSolverCl(SolverCl):
         writer.write_data(self.t, cell_data=cell_data)
 
     def _solve(self, ocl_queue, ocl_prg):
+        # Change dir now for exporter
+        #os.chdir(self.export_dir)
+
         # Set OpenCL Kernel scalar arguments
         time_step = ocl_prg.solver_time_step
         time_step.set_scalar_arg_dtypes([self.dtype, None, None, None, None])

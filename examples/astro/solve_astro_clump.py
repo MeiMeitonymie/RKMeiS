@@ -201,6 +201,7 @@ if __name__ == "__main__":
         use_double=True,
         use_chemistry=True,
     )
+    
     print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
     print("Number of iterations :",nb_iter)
     print("Export frequency :",export_freq)
