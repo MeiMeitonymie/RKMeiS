@@ -57,7 +57,7 @@ if __name__ == "__main__":
     m = PN(
         pn_order,
         dim,
-        cl_src_file="./cl/pn/main_beam.cl",
+        cl_src_file="./cl/pn/main_burst.cl",
         cl_include_dirs=["./cl/pn"],
         cl_build_opts=[
             f"-D USE_SPHERICAL_HARMONICS_P{pn_order}",

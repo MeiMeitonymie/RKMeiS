@@ -48,13 +48,13 @@ def get_dim_coeff(
     x_phy_value = np.float64(x_phy_value)
     c_phy_value = np.float64(c_phy_value)
 
-    dt_adim = np.float64(cfl)*np.float64(dx_adim)/np.float64(c_adim)
-
-    """dt_adim = (
+    
+    dt_adim = (
         np.float64(cfl)
         * np.float64(get_hmin(dim, dx_adim, dy_adim, dz_adim))
         / np.float64(c_adim)
-    )"""
+    )
+    print("dt_adim ",dt_adim)
 
     dx_dim = dx_adim * x_phy_value
     dy_dim = dy_adim * x_phy_value
@@ -197,10 +197,10 @@ if __name__ == "__main__":
         tmax=None,
         cfl=cfl,
         dt=None,
-        iter_max=50,
+        iter_max=nb_iter,
         use_muscl=False,
         export_idx=[0, 1, 2],
-        export_frq=1,
+        export_frq=export_freq,
         use_double=True,
         use_chemistry=True,
     )

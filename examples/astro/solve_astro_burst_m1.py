@@ -7,7 +7,7 @@ from astro import AstroFVSolverCL
 
 from rkms.common import pprint_dict
 from rkms.mesh import MeshStructured
-from rkms.model import PN
+from rkms.model import M1
 from rkms.solver import FVTimeMode
 
 # Configure environment variables for controlling pyopencl and NVIDIA platform
@@ -27,9 +27,6 @@ os.environ["PYOPENCL_CTX"] = "0"
 
 
 if __name__ == "__main__":
-    # Model
-    pn_order = 5
-
     # Build Mesh
     dim = 3
     mesh_nx = 65
@@ -53,18 +50,15 @@ if __name__ == "__main__":
         use_periodic_bd=False,
     )
 
-    # Build PN Model
-    m = PN(
-        pn_order,
+    # Build M1 Model
+    m = M1(
         dim,
-        cl_src_file="./cl/pn/main_beam.cl",
-        cl_include_dirs=["./cl/pn"],
-        cl_build_opts=[
-            f"-D USE_SPHERICAL_HARMONICS_P{pn_order}",
-            "-cl-fast-relaxed-math",
-        ],
+        cl_src_file="./cl/m1/main_burst.cl",
+        cl_include_dirs=["./cl/m1"],
+        cl_build_opts=["-cl-fast-relaxed-math"],
+        # Values injected in "./cl/m1/main_beam.cl"
         cl_replace_map={},
-    )
+	)
 
     s = AstroFVSolverCL(
         mesh=mesh,

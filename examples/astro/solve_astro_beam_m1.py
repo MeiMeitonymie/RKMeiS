@@ -33,6 +33,9 @@ if __name__ == "__main__":
     mesh_ny = 65
     mesh_nz = 65 if dim == 3 else 0
 
+    mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
+
+
     mesh = MeshStructured(
         filename=None,
         nx=mesh_nx,
@@ -46,8 +49,8 @@ if __name__ == "__main__":
         zmax=1.0,
         use_periodic_bd=False,
     )
-    # Build PN Model
-
+    
+    # Build M1 Model
     m = M1(
         dim,
         cl_src_file="./cl/m1/main_beam.cl",
@@ -64,7 +67,7 @@ if __name__ == "__main__":
         model=m,
         time_mode=FVTimeMode.FORCE_ITERMAX_FROM_CFL,
         tmax=None,
-        cfl=0.9,
+        cfl=0.8,
         dt=None,
         iter_max=400,
         use_muscl=False,

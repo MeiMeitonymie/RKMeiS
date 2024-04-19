@@ -343,9 +343,11 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     
     // Cap small new density to +-DBL_EPSILON or +-FLT_EPISLON
 #ifdef USE_DOUBLE
-    wn[id] = copysign(max(DBL_EPSILON, fabs(N_n) / PHY_W0_DIM),N_n);
+    wn[id] = N_n / PHY_W0_DIM;
+    //wn[id] = copysign(max(DBL_EPSILON, fabs(N_n) / PHY_W0_DIM),N_n);
 #else
-    wn[id] = copysign(max(FLT_EPSILON, (float)(fabs(N_n) / PHY_W0_DIM)), (float)N_n);
+    wn[id] = (float)N_n / PHY_W0_DIM
+    //wn[id] = copysign(max(FLT_EPSILON, (float)(fabs(N_n) / PHY_W0_DIM)), (float)N_n);
 #endif
    
    // Cap inversion of old density to +-DBL_EPSILON or +-FLT_EPISLON

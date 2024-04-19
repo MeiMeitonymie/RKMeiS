@@ -48,12 +48,11 @@ def get_dim_coeff(
     x_phy_value = np.float64(x_phy_value)
     c_phy_value = np.float64(c_phy_value)
 
-    dt_adim = np.float64(cfl)*np.float64(dx_adim)/np.float64(c_adim)
-    """dt_adim = (
+    dt_adim = (
         np.float64(cfl)
         * np.float64(get_hmin(dim, dx_adim, dy_adim, dz_adim))
         / np.float64(c_adim)
-    )_"""
+    )
 
     dx_dim = dx_adim * x_phy_value
     dy_dim = dy_adim * x_phy_value
@@ -92,7 +91,7 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 0.16
+    sig_value = 16
     filter_type = 1
 
 
@@ -179,7 +178,7 @@ if __name__ == "__main__":
             },
         )
 
-    endt = 1e5 #yrs
+    endt = 15e5 #yrs
     nb_iter = int(endt*3600*24*365/dt_dim)
     #nb_iter = 2
     if nb_iter>200:
