@@ -36,9 +36,7 @@
 #define EXPO
 #endif
 
-#ifdef FILTERING
-#include "sources/filtering.cl"
-#endif
+
 
 #if DIM == 2
 #define IS_2D
@@ -74,6 +72,10 @@
 #include "numfluxes/p11.cl"
 #endif
 
+#ifdef FILTERING
+#include "sources/filtering.cl"
+#endif
+
 // Add beam sources
 #include "sources/src_burst.cl"
 
@@ -91,6 +93,10 @@ void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
                real_t s[M])
 {
     src_burst(t, x, s);
+
+    #ifdef FILTERING
+    Pn_filter(wn,s);
+    #endif
 }
 
 void model_flux_num(const real_t wL[M], const real_t wR[M],
@@ -98,9 +104,6 @@ void model_flux_num(const real_t wL[M], const real_t wR[M],
 {
     num_flux_rus(wL, wR, vn, flux);
 
-    #ifdef FILTERING
-    Pn_filter(wL);
-    #endif
 }
 
 void model_flux_num_bd(const real_t wL[M], const real_t wR[M],

@@ -67,9 +67,10 @@ void Pn_filter(const real_t w[M], real_t s[M])
     int k=0;
     for (int i=1;i<=(int)L;i++)
     {
-        for (int j=-(int)L;j<=(int)L;j++)
+        for (int j=-i;j<=i;j++)
         {
             k+=1;
+            //printf("%d %d %d\n",k, i, j);
             //printf("pre %lf ",s[i]);
             s[k]= s[k] - SIG * w[k]* log(filter_func((double)i/(L+1.)))/log(filter_func(L/(L+1.)));
             //printf("post %lf \n",log(filter_func((double)i/(L+1.)))/log(filter_func(L/(L+1.))));

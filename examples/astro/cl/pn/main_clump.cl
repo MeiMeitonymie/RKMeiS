@@ -49,10 +49,6 @@
 #define EXPO
 #endif
 
-#ifdef FILTERING
-#include "sources/filtering.cl"
-#endif
-
 #ifdef USE_SPHERICAL_HARMONICS_P1
 #include "numfluxes/p1.cl"
 #endif
@@ -75,6 +71,10 @@
 
 #ifdef USE_SPHERICAL_HARMONICS_P11
 #include "numfluxes/p11.cl"
+#endif
+
+#ifdef FILTERING
+#include "sources/filtering.cl"
 #endif
 
 // Add beam sources
