@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 16
+    sig_value = 30
     filter_type = 1
 
 
@@ -178,7 +178,7 @@ if __name__ == "__main__":
             },
         )
 
-    endt = 15e5 #yrs
+    endt = 3e6 #yrs
     nb_iter = int(endt*3600*24*365/dt_dim)
     #nb_iter = 2
     if nb_iter>200:

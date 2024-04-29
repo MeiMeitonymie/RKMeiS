@@ -51,9 +51,12 @@ static inline void pn_src_clump(const real_t t, const real_t x[DIM],
     const real_t t8 = t4 * DZ;
 
     // Locate cell at the center of the geometry
+    //Point
     //if ((x[0] >= SRC_X) && (x[0] <= (SRC_X+DX)) && (x[1] >= SRC_Y) && (x[1] <= (SRC_Y+DY)) && (x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
-    if ((x[0] >= SRC_X-0.12) && (x[0] <= (SRC_X+0.12)) && (x[1] >= SRC_Y-0.12) && (x[1] <= (SRC_Y+0.12)) && (x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
-    //if ((x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
+    //Small slab
+    //if ((x[0] >= SRC_X-0.12) && (x[0] <= (SRC_X+0.12)) && (x[1] >= SRC_Y-0.12) && (x[1] <= (SRC_Y+0.12)) && (x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
+    //complet slab
+    if ((x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
 
         pn_clump_value(w);
 

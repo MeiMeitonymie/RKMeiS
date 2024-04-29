@@ -28,7 +28,7 @@ os.environ["PYOPENCL_CTX"] = "0"
 
 if __name__ == "__main__":
     # Model
-    pn_order = 5
+    pn_order = 9
 
     # Build Mesh
     dim = 3
@@ -38,6 +38,16 @@ if __name__ == "__main__":
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
+    # FILTERING
+    """
+    Filtering types:
+    0 = no filtering
+    1 = Lancos
+    2 = Splines
+    3 = Exp
+    """
+    sig_value = 30
+    filter_type = 1
 
     mesh = MeshStructured(
         filename=None,
@@ -63,7 +73,10 @@ if __name__ == "__main__":
             f"-D USE_SPHERICAL_HARMONICS_P{pn_order}",
             "-cl-fast-relaxed-math",
         ],
-        cl_replace_map={},
+        cl_replace_map={
+            "__SIG__":sig_value,
+            "__FILTER__":filter_type,
+        },
     )
 
     s = AstroFVSolverCL(
@@ -73,7 +86,7 @@ if __name__ == "__main__":
         tmax=None,
         cfl=0.8,
         dt=None,
-        iter_max=400,
+        iter_max=200,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,

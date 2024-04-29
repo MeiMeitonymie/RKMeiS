@@ -46,7 +46,7 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 5
+    sig_value = 30
     filter_type = 1
 
 
