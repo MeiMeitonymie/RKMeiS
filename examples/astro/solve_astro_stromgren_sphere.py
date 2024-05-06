@@ -66,8 +66,8 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = True
-    use_pn = False
+    use_m1 = False
+    use_pn = True
     pn_order = 5
 
     # CFL
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
     # Dim values
-    cdiv = 100.0
+    cdiv = 1000.0
     x_phy_value = 6.6 * 3.086e19 * 2 #*2
     c_phy_value = 3.0e8 / cdiv
     w_phy_value = 5.0e48 #emissivity
