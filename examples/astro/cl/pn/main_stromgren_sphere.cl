@@ -28,6 +28,7 @@
 #define PHY_W0_DIM __PHY_W0_DIM__
 #define SIG __SIG__
 #define FILTER __FILTER__
+#define ISO __ISO__
 
 #if FILTER != 0
 #define FILTERING
@@ -84,7 +85,12 @@
 
 // Add chemistry module
 #ifdef USE_CHEMISTRY
-#include "../chemistry/hydrogen.cl"
+#if ISO == 1
+#include "../chemistry/hydrogen_strom_iso.cl"
+#endif
+#if ISO == 0
+#include "../chemistry/hydrogen_strom.cl"
+#endif
 #endif
 
 void model_init_cond(const real_t t, const real_t x[DIM], real_t s[M])

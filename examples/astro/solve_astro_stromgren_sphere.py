@@ -82,7 +82,7 @@ if __name__ == "__main__":
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
     # Dim values
-    cdiv = 1000.0
+    cdiv = 100.0
     x_phy_value = 6.6 * 3.086e19 * 2 #*2
     c_phy_value = 3.0e8 / cdiv
     w_phy_value = 5.0e48 #emissivity
@@ -97,6 +97,9 @@ if __name__ == "__main__":
     """
     sig_value = 0.16
     filter_type = 0
+
+    # ISOTHERMAL FLAG
+    iso = False
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -158,6 +161,7 @@ if __name__ == "__main__":
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
+                "__ISO__":iso,
             },
         )
 
@@ -179,11 +183,12 @@ if __name__ == "__main__":
                 "__PHY_W0_DIM__": w0_rescale,
                 "__SIG__":sig_value,
                 "__FILTER__":filter_type,
+                "__ISO__":iso,
             },
         )
 
-    #nb_iter=5000
-    endt = 4*122.34e6 #*2#yrs
+    #endt = 4*122.34e6 #*2#yrs
+    endt = 100e6
     nb_iter = int(endt*3600*24*365/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)
