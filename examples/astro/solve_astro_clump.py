@@ -92,7 +92,7 @@ if __name__ == "__main__":
     3 = Exp
     """
     sig_value = 30
-    filter_type = 1
+    filter_type = 0
 
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(

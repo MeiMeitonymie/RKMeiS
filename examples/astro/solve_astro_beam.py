@@ -28,7 +28,7 @@ os.environ["PYOPENCL_CTX"] = "0"
 
 if __name__ == "__main__":
     # Model
-    pn_order = 9
+    pn_order = 5
 
     # Build Mesh
     dim = 3
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     3 = Exp
     """
     sig_value = 30
-    filter_type = 1
+    filter_type = 0
 
     mesh = MeshStructured(
         filename=None,
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         tmax=None,
         cfl=0.8,
         dt=None,
-        iter_max=200,
+        iter_max=250,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,

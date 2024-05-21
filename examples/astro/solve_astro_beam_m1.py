@@ -69,7 +69,7 @@ if __name__ == "__main__":
         tmax=None,
         cfl=0.8,
         dt=None,
-        iter_max=200,
+        iter_max=250,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,
