@@ -2,12 +2,14 @@
 #define SRC_STROMGREN_SPHERE_CL
 
 #ifdef USE_DOUBLE
-#define SRC_X      (0.5)
+#define SRC_X_1    (0.25)
+#define SRC_X_2    (0.75)
 #define SRC_Y      (0.5)
 #define SRC_Z      (0.5)
 #define SRC_VACCUM (DBL_EPSILON)
 #else
-#define SRC_X      (0.5f)
+#define SRC_X_1    (0.25)
+#define SRC_X_2    (0.75)
 #define SRC_Y      (0.5f)
 #define SRC_Z      (0.5f)
 #define SRC_VACCUM (FLT_EPSILON)
@@ -44,7 +46,11 @@ static inline void src_cont(const real_t t, const real_t x[DIM],
         }
     }
 
-    if ((x[0] >= SRC_X - t6) && (x[0] <= SRC_X + t6) && (x[1] >= SRC_Y - t7) &&
+    if ((x[0] >= SRC_X_1 - t6) && (x[0] <= SRC_X_1 + t6) && (x[1] >= SRC_Y - t7) &&
+        (x[1] <= SRC_Y + t7) && (x[2] >= SRC_Z - t8) && (x[2] <= SRC_Z + t8)) {
+            w[0] = t3;
+    }
+    if ((x[0] >= SRC_X_2 - t6) && (x[0] <= SRC_X_2 + t6) && (x[1] >= SRC_Y - t7) &&
         (x[1] <= SRC_Y + t7) && (x[2] >= SRC_Z - t8) && (x[2] <= SRC_Z + t8)) {
             w[0] = t3;
     }

@@ -28,15 +28,15 @@ os.environ["PYOPENCL_CTX"] = "0"
 
 if __name__ == "__main__":
     # Model
-    use_m1 = False
-    use_pn = True
+    use_m1 = True
+    use_pn = False
     pn_order = 9
 
     # Build Mesh
     dim = 3
-    mesh_nx = 16
-    mesh_ny = 16
-    mesh_nz = 16 if dim == 3 else 0
+    mesh_nx = 64
+    mesh_ny = 64
+    mesh_nz = 64 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         tmax=None,
         cfl=0.8,
         dt=None,
-        iter_max=200,
+        iter_max=400,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,
