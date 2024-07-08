@@ -1,17 +1,5 @@
 
 
-
-/*function Pn_filter(L, filter = "None")
-
-    if filter == "Lancos"
-        return sin(L) /L
-    elseif filter == "Splines4"
-        return 1.0/(L^4+1.0)
-    elseif filter == "Expo4"
-        return exp(log(0.0000000000001)*L^4)
-    end
-end*/
-
 //returns the filtering coefficients
 
 #ifdef FILTERING
