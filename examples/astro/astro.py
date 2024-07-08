@@ -130,7 +130,9 @@ class AstroFVSolverCL(FVSolverCl):
             
         for key, val in self.init_buffer_map.items():
             device_buff_name = f"{key}_d"
+            print(device_buff_name,val)
             if hasattr(self, device_buff_name) and val is not None:
+                print(device_buff_name)
                 setattr(self, device_buff_name, cl_array.to_device(ocl_queue,  val))
 
     @property
