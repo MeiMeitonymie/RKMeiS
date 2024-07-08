@@ -73,9 +73,9 @@ if __name__ == "__main__":
 
     # Build Mesh
     dim = 3
-    mesh_nx = 64
-    mesh_ny = 64
-    mesh_nz = 64 if dim == 3 else 0
+    mesh_nx = 128
+    mesh_ny = 128
+    mesh_nz = 128 if dim == 3 else 0
 
     # FILTERING
     """
@@ -103,9 +103,9 @@ if __name__ == "__main__":
     )
 
     # Dim values
-    x_phy_value = 6.6 * 3.086e19 * 2
+    x_phy_value = 0.5 * 3.086e22
     c_phy_value = 3.0e8 / 1000.0
-    w_phy_value = 5.0e48
+    w_phy_value = 1e52
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -141,14 +141,17 @@ if __name__ == "__main__":
     if use_m1:
         m = M1(
             dim,
-            cl_src_file="./cl/m1/main_stromgren_sphere.cl",
+            cl_src_file="./cl/m1/main_map.cl",
             cl_include_dirs=["./cl/m1"],
             cl_build_opts=["-cl-fast-relaxed-math"],
-            # Values injected in "./cl/m1/main_stromgren_sphere.cl"
+            # Values injected in "./cl/m1/main_map.cl"
             cl_replace_map={
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
+                "_MESH_NX_": mesh_nx,
+                "_MESH_NY_": mesh_ny,
+                "_MESH_NZ_": mesh_nz,
             },
         )
 
@@ -156,19 +159,22 @@ if __name__ == "__main__":
         m = PN(
             pn_order,
             dim,
-            cl_src_file="./cl/pn/main_stromgren_sphere.cl",
+            cl_src_file="./cl/pn/main_map.cl",
             cl_include_dirs=["./cl/pn"],
             cl_build_opts=[
                 f"-D USE_SPHERICAL_HARMONICS_P{pn_order}",
                 "-cl-fast-relaxed-math",
             ],
-            # Values injected in "./cl/pn/main_stromgren_sphere.cl"
+            # Values injected in "./cl/pn/main_map.cl"
             cl_replace_map={
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
                 "__SIG__":sig_value,
                 "__FILTER__":filter_type,
+                "_MESH_NX_": mesh_nx,
+                "_MESH_NY_": mesh_ny,
+                "_MESH_NZ_": mesh_nz,
             },
         )
 
@@ -183,8 +189,8 @@ if __name__ == "__main__":
         "nh": read_astro_file_bin("density.bin", mesh_nx, mesh_ny, mesh_nz),
     }
 
-    nb_iter=5000
-    export_freq = 100
+    nb_iter=5
+    export_freq = 1
     s = AstroFVSolverCL(
         mesh=mesh,
         model=m,
@@ -196,7 +202,7 @@ if __name__ == "__main__":
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=export_freq,
-        use_double=True,
+        use_double=False,
         use_chemistry=True,
         init_buffer_map=init_buffer_map,
     )

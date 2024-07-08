@@ -239,7 +239,7 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh, __global re
     temp[id] = (real_t)100.;
     
     // TO COMMENT IF MAP IS LOADED
-    //nh[id] = (real_t)1e3;
+    nh[id] = nh[id]*1e6;
 
 }
 
