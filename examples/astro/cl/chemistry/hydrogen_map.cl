@@ -211,17 +211,22 @@ double get_root_newton_raphson(const double a, const double b, const double c,
     double x = guess;
     double f = HUGE_VAL;
     double df, t2, t3;
+    int count = 0;
 
     while (fabs(f) >= NEWTON_EPS) {
         // Intermediate variables
         t2 = x * x;
         t3 = x * t2;
-
+        count +=1;
         // Polynomial and derivative evaluation
         f = a * t3 + b * t2 + c * x + d;
         df = 3. * a * t2 + 2. * b * x + c;
 
         x -= f / df;
+        if (count>1000) {
+            printf("Error: infinite newton loop\n");
+            printf("diff : %lf\n",fabs(f)-NEWTON_EPS);
+        }
     }
     return x;
 }
@@ -239,7 +244,7 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh, __global re
     temp[id] = (real_t)100.;
     
     // TO COMMENT IF MAP IS LOADED
-    //nh[id] = nh[id]*1e6;
+    nh[id] = (real_t)1.e6 * nh[id];
 
 }
 

@@ -9,6 +9,9 @@
 #define DX     __DX__
 #define DY     __DY__
 #define DIM    __DIM__
+#define MESH_NX _MESH_NX_
+#define MESH_NY _MESH_NY_
+#define MESH_NZ _MESH_NZ_
 #define C_WAVE (1.0)
 #if DIM == 2
 #define IS_2D
@@ -28,7 +31,6 @@
 #define PHY_W0_DIM __PHY_W0_DIM__
 #define SIG __SIG__
 #define FILTER __FILTER__
-#define ISO __ISO__
 
 #if FILTER != 0
 #define FILTERING
