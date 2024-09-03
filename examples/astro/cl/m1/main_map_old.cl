@@ -28,6 +28,7 @@
 #define PHY_DT_DIM __PHY_DT_DIM__
 #define PHY_W0_DIM __PHY_W0_DIM__
 
+
 #include "numfluxes/m1.cl"
 #include "sources/src_map.cl"
 
@@ -37,13 +38,13 @@
 
 void model_init_cond(const real_t t, const real_t x[DIM], real_t s[M])
 {
-    m1_src_stromgren_sphere(t, x, s);
+    m1_src_map(t, x, s);
 }
 
 void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
                real_t s[M])
 {
-    m1_src_stromgren_sphere(t, x, s);
+    m1_src_map(t, x, s);
 
     // WARNING: Divide by DT (adim) is required to fit test case
     for (int k = 0; k < M; k++) {
@@ -54,10 +55,8 @@ void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
 void model_flux_num(const real_t wL[M], const real_t wR[M],
                     const real_t vn[DIM], real_t flux[M])
 {
-    /*const double test = sqrt(wL[1]*wL[1] + wL[2]*wL[2] + wL[3] * wL[3]) / wL[0];
-    if (test>1.0) {
-        printf("\n%lf", test);
-    }*/
+    //const double test = sqrt(wL[1]*wL[1] + wL[2]*wL[2] + wL[3] * wL[3]) / wL[0];
+    //printf("\n%lf", test);
     m1_num_flux_rusanov(wL, wR, vn, flux);
 }
 

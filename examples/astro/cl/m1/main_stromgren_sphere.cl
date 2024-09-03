@@ -57,8 +57,10 @@ void model_src(const real_t t, const real_t x[DIM], const real_t wn[M],
 void model_flux_num(const real_t wL[M], const real_t wR[M],
                     const real_t vn[DIM], real_t flux[M])
 {
-    //const double test = sqrt(wL[1]*wL[1] + wL[2]*wL[2] + wL[3] * wL[3]) / wL[0];
-    //printf("\n%lf", test);
+    /*const double test = sqrt(wL[1]*wL[1] + wL[2]*wL[2] + wL[3] * wL[3]) / wL[0];
+    if (test>1.0) {
+        printf("\n%lf", test);
+    }*/
     m1_num_flux_rusanov(wL, wR, vn, flux);
 }
 

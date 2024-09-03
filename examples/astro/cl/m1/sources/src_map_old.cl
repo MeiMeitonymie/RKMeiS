@@ -13,18 +13,18 @@
 #define SRC_VACCUM (FLT_EPSILON)
 #endif
 
-static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
+static inline void m1_src_map(const real_t t, const real_t x[DIM],
                                            real_t w[M])
 {
     const real_t t0 = SRC_VACCUM;
 
 #ifdef USE_DOUBLE
-    const double t1 = 1.e-4;
+    const double t1 = 0.1;
     const double t2 = 0.;
     const double t3 = 1.;
     const double t4 = 0.5;
 #else
-    const float t1 = 1.e-4f;
+    const float t1 = 0.1f;
     const float t2 = 0.f;
     const float t3 = 1.f;
     const float t4 = 0.5f;
@@ -32,11 +32,11 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     const real_t t5 = t0 * t1;
 
     if (t >= DT) {
-        w[0] = t2;
-        w[1] = t2;
-        w[2] = t2;
+        w[0] = t1;
+        w[1] = t1;
+        w[2] = t1;
 #ifndef IS_2D
-        w[3] = t2;
+        w[3] = t1;
 #endif
     } else {
         // Apply some vaccum (non zero) when initializing solution
@@ -53,7 +53,8 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     const real_t t8 = t4 * DZ;
 
     const long id = get_global_id(0);
- //SOURCE 1
+
+//SOURCE 1
     if (id==((69-1) + (87-1)*MESH_NX + (88-1)*MESH_NY*MESH_NY)){
         w[0] = 0.646477039572334;
         w[1] = t1;
@@ -63,7 +64,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
 #endif
     }
 
-
+/*
 //SOURCE 2
     if (id==((68-1) + (120-1)*MESH_NX + (103-1)*MESH_NY*MESH_NY)){
         w[0] = 0.687331910809231;
@@ -227,8 +228,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
         w[3] = t1;
 #endif
     }
-
+*/
 
 }
 #endif
-

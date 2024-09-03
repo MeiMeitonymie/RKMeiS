@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 import numpy as np
-from astro import AstroFVSolverCL
+from astro import AstroFVSolverCL, read_astro_file_bin
 
 from rkms.common import pprint_dict
 from rkms.mesh import MeshStructured
@@ -48,13 +48,11 @@ def get_dim_coeff(
     x_phy_value = np.float64(x_phy_value)
     c_phy_value = np.float64(c_phy_value)
 
-    
     dt_adim = (
         np.float64(cfl)
         * np.float64(get_hmin(dim, dx_adim, dy_adim, dz_adim))
         / np.float64(c_adim)
     )
-    print("dt_adim ",dt_adim)
 
     dx_dim = dx_adim * x_phy_value
     dy_dim = dy_adim * x_phy_value
@@ -68,7 +66,7 @@ if __name__ == "__main__":
     # Model
     use_m1 = True
     use_pn = False
-    pn_order = 5
+    pn_order = 3
 
     # CFL
     cfl = 0.8
@@ -78,14 +76,6 @@ if __name__ == "__main__":
     mesh_nx = 5
     mesh_ny = 5
     mesh_nz = 5 if dim == 3 else 0
-
-    mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
-
-    # Dim values
-    cdiv = 1000.0
-    x_phy_value = 6.6 * 3.086e19 * 2 #*2
-    c_phy_value = 3.0e8 / cdiv
-    w_phy_value = 5.0e48 #emissivity
 
     # FILTERING
     """
@@ -98,8 +88,25 @@ if __name__ == "__main__":
     sig_value = 0.16
     filter_type = 0
 
-    # ISOTHERMAL FLAG
-    iso = 0
+    mesh = MeshStructured(
+        filename=None,
+        nx=mesh_nx,
+        ny=mesh_ny,
+        nz=mesh_nz,
+        xmin=0.0,
+        xmax=1.0,
+        ymin=0.0,
+        ymax=1.0,
+        zmin=0.0,
+        zmax=1.0,
+        use_periodic_bd=False,
+    )
+
+    # Dim values
+    cdiv = 1.0
+    x_phy_value = 0.5 * 3.086e22
+    c_phy_value = 3.0e8 / cdiv
+    w_phy_value = 1e52
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -113,10 +120,7 @@ if __name__ == "__main__":
     )
 
     iter = int(np.floor(w_phy_value / dt_dim))
-    if mesh_nx%2==0:
-        w0_rescale = dt_dim * w_phy_value / (2*dx_dim * 2*dy_dim * 2*dz_dim)
-    else:
-        w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
+    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
 
     pprint_dict(
         {
@@ -134,69 +138,60 @@ if __name__ == "__main__":
         header_msg="RESCALING VALUES",
     )
 
-    mesh = MeshStructured(
-        filename=None,
-        nx=mesh_nx,
-        ny=mesh_ny,
-        nz=mesh_nz,
-        xmin=0.0,
-        xmax=1.0,
-        ymin=0.0,
-        ymax=1.0,
-        zmin=0.0,
-        zmax=1.0,
-        use_periodic_bd=False,
-    )
-
     # Build M1 Model
     if use_m1:
-        print("Using M1")
         m = M1(
             dim,
-            cl_src_file="./cl/m1/main_stromgren_sphere.cl",
+            cl_src_file="./cl/m1/main_map.cl",
             cl_include_dirs=["./cl/m1"],
             cl_build_opts=["-cl-fast-relaxed-math"],
-            # Values injected in "./cl/m1/main_stromgren_sphere.cl"
+            # Values injected in "./cl/m1/main_map.cl"
             cl_replace_map={
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
-                "__ISO__":iso,
+                "_MESH_NX_": mesh_nx,
+                "_MESH_NY_": mesh_ny,
+                "_MESH_NZ_": mesh_nz,
             },
         )
 
     if use_pn:
-        print("Using P"+str(pn_order))
         m = PN(
             pn_order,
             dim,
-            cl_src_file="./cl/pn/main_stromgren_sphere.cl",
+            cl_src_file="./cl/pn/main_map.cl",
             cl_include_dirs=["./cl/pn"],
             cl_build_opts=[
                 f"-D USE_SPHERICAL_HARMONICS_P{pn_order}",
                 "-cl-fast-relaxed-math",
             ],
-            # Values injected in "./cl/pn/main_stromgren_sphere.cl"
+            # Values injected in "./cl/pn/main_map.cl"
             cl_replace_map={
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
                 "__SIG__":sig_value,
                 "__FILTER__":filter_type,
-                "__ISO__":iso,
+                "_MESH_NX_": mesh_nx,
+                "_MESH_NY_": mesh_ny,
+                "_MESH_NZ_": mesh_nz,
             },
         )
 
-    #endt = 4*122.34e6 #*2#yrs
-    endt = 100e6
-    nb_iter = int(endt*3600*24*365/dt_dim)
-    if nb_iter>200:
-        export_freq = int(nb_iter/40)
-    else:
-        export_freq=1
-    #nb_iter = 10
-    #export_freq=1
+    # Load 'nh' buffer from file
+    # WARNING:
+    #  - name has to be the same than in _dalloc without suffix _d. eg. for a
+    #    buffer named 'nh' the function search for self.nh_d
+    #  - The nh filling in kernel chem_init_sol (chemistry.cl) must be commented
+    #    out since nh is now filled with file values.
 
+    init_buffer_map = {
+        "nh": read_astro_file_bin("density.bin", mesh_nx, mesh_ny, mesh_nz),
+    }
+
+    nb_iter=5
+    export_freq = 1
     s = AstroFVSolverCL(
         mesh=mesh,
         model=m,
@@ -208,8 +203,9 @@ if __name__ == "__main__":
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=export_freq,
-        use_double=True,
-        use_chemistry=True,
+        use_double=False,
+        use_chemistry=False,
+        #init_buffer_map=init_buffer_map,
     )
 
     print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
