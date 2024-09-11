@@ -3,7 +3,7 @@
 
 // Physical constantes (dim) (double)
 #define PHY_CST_KB      (1.380649e-23)
-#define PHY_CST_ALPHA_I (2.493e-22)
+#define PHY_CST_ALPHA_I (2.493e-22) 
 
 // Newton convergence criterion
 #define NEWTON_EPS      (1e-8)

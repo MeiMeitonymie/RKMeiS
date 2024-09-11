@@ -3,7 +3,8 @@
 
 // Physical constantes (dim) (double)
 #define PHY_CST_KB      (1.380649e-23)
-#define PHY_CST_ALPHA_I (2.493e-22)
+#define PHY_CST_ALPHA_I (1.097e-22) //source black body 10^4K
+// source black body 10^5K: 1.097e-22 + Eeff: 29.61 eV au lieu de 20.28
 
 // Newton convergence criterion
 #define NEWTON_EPS      (1e-8)
@@ -199,7 +200,7 @@ double cooling_rate_density(const double T, const double nH, const double x_n)
 double heating_rate(const double nH, const double x, const double x_n,
                     const double N, const double al_i)
 {
-    const double e = (20.28 - 13.6) * 1.60218e-19;
+    const double e = (29.61 - 13.6) * 1.60218e-19;
     // Short time step
     return nH * (1. - x_n) * N * al_i * e * PHY_C_DIM;
 }
