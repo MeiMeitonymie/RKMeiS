@@ -3,8 +3,9 @@
 
 // Physical constantes (dim) (double)
 #define PHY_CST_KB      (1.380649e-23)
-#define PHY_CST_ALPHA_I (1.097e-22) //source black body 10^4K
-// source black body 10^5K: 1.097e-22 + Eeff: 29.61 eV au lieu de 20.28
+#define PHY_CST_ALPHA_I (1.097e-22) 
+// value from Stranex 2010
+// source black body 10^5K: 1.097e-22 + Eeff: 29.61 eV
 
 // Newton convergence criterion
 #define NEWTON_EPS      (1e-8)
@@ -202,7 +203,9 @@ double heating_rate(const double nH, const double x, const double x_n,
 {
     const double e = (29.61 - 13.6) * 1.60218e-19;
     // Short time step
-    return nH * (1. - x_n) * N * al_i * e * PHY_C_DIM;
+    //return nH * (1. - x_n) * N * al_i * e * PHY_C_DIM;
+    return nH * (1. - x) * N * al_i * e * PHY_C_DIM;
+
 }
 
 // TODO: FUNCTION IS NOT SAFE !!!!!!!!!

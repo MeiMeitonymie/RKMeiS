@@ -28,8 +28,8 @@ os.environ["PYOPENCL_CTX"] = "0"
 
 if __name__ == "__main__":
     # Model
-    use_m1 = True
-    use_pn = False
+    use_m1 = False
+    use_pn = True
     pn_order = 9
 
     # Build Mesh
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         tmax=None,
         cfl=0.8,
         dt=None,
-        iter_max=400,
+        iter_max=1200,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,
