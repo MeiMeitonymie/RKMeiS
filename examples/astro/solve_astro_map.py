@@ -191,7 +191,9 @@ if __name__ == "__main__":
     }
 
     #endt = 4*122.34e6 #*2#yrs
-    endt = 0.05e6
+    endt = 0.4e6
+    #endt = 2.5e6
+    #endt = 4.0e6
     nb_iter = int(endt*3600*24*365/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)
