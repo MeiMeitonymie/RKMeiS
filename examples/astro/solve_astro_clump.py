@@ -179,7 +179,7 @@ if __name__ == "__main__":
         )
 
     endt = 3e6 #yrs
-    nb_iter = int(endt*3600*24*365/dt_dim)
+    nb_iter = int(endt*3600*24*365.25/dt_dim)
     #nb_iter = 2
     if nb_iter>200:
         export_freq = int(nb_iter/40)
@@ -201,7 +201,7 @@ if __name__ == "__main__":
         use_chemistry=True,
     )
     
-    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
+    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365.25))
     print("Number of iterations :",nb_iter)
     print("Export frequency :",export_freq)
     if filter_type==0:

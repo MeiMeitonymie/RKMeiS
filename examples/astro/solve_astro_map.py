@@ -84,8 +84,8 @@ if __name__ == "__main__":
     # Dim values
     cdiv = 1
     x_phy_value = 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
-    c_phy_value = 3.0e8 / cdiv
-    w_phy_value = 1e52 
+    c_phy_value = 3.0e8 / cdiv #m/s
+    w_phy_value = 1e52 # s^-1
 
     # FILTERING
     """
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     )
 
     iter = int(np.floor(w_phy_value / dt_dim))
-    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim)
+    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim) #m^-3
 
     pprint_dict(
         {
@@ -190,11 +190,9 @@ if __name__ == "__main__":
         "nh": read_astro_file_bin("density.bin", mesh_nx, mesh_ny, mesh_nz),
     }
 
-    #endt = 4*122.34e6 #*2#yrs
     endt = 0.4e6
-    #endt = 2.5e6
     #endt = 4.0e6
-    nb_iter = int(endt*3600*24*365/dt_dim)
+    nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)
     else:
@@ -216,7 +214,7 @@ if __name__ == "__main__":
         init_buffer_map=init_buffer_map,
     )
 
-    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
+    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365.25))
     print("Number of iterations :",nb_iter)
     print("Export frequency :",export_freq)
     if filter_type==0:

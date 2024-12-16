@@ -3,9 +3,8 @@
 
 // Physical constantes (dim) (double)
 #define PHY_CST_KB      (1.380649e-23)
-#define PHY_CST_ALPHA_I (2.493e-22)
-// value from Dustier (Lewis et al 2023)
-// source black body 10^4K: 2.493e-22 + Eeff: 20.28 eV
+#define PHY_CST_ALPHA_I (6.3e-22)
+// value from at 13.6 eV (Osterbrock 1974)
 
 // Newton convergence criterion
 #define NEWTON_EPS      (1e-8)
@@ -238,7 +237,7 @@ __kernel void chem_init_sol(__global real_t *x, __global real_t *nh, __global re
     // Stromgren sphere test case values
     xi[id] = (real_t)1.2e-3;
         
-    temp[id] = (real_t)10000.;
+    temp[id] = (real_t)1.e4;
     
     // TO COMMENT IF MAP IS LOADED
     nh[id] = (real_t)1e3;
@@ -288,11 +287,10 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     // const double N_n = fabs(N) + c1 + c2 + -nH * (x_n - x);
 
     // Compute T
-    const double L = cooling_rate_density(T, nH, x_n);
-    const double H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
-    const double coef =
-        2. * (H - L) * PHY_DT_DIM / (3. * nH * (1. + x_n) * PHY_CST_KB);
-    //const double T_n = max((coef + T) / (1. + x_n - x), 10.);
+    //const double L = cooling_rate_density(T, nH, x_n);
+    //const double H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
+    //const double coef =
+        //2. * (H - L) * PHY_DT_DIM / (3. * nH * (1. + x_n) * PHY_CST_KB);
     const double T_n = 1.e4;
 
     // Update N (moment 0)
@@ -301,27 +299,21 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     // Cap small new density to +-DBL_EPSILON or +-FLT_EPISLON
 #ifdef USE_DOUBLE
     wn[id] = N_n / PHY_W0_DIM;
-    //wn[id] = copysign(max(DBL_EPSILON, fabs(N_n) / PHY_W0_DIM),N_n);
 #else
-    wn[id] = (float)N_n / PHY_W0_DIM
-    //wn[id] = copysign(max(FLT_EPSILON, (float)(fabs(N_n) / PHY_W0_DIM)), (float)N_n);
+    wn[id] = (float)N_n / PHY_W0_DIM;
 #endif
    
    // Cap inversion of old density to +-DBL_EPSILON or +-FLT_EPISLON
 #ifdef USE_DOUBLE
-    //const double t6 =1. /  copysign(max(DBL_EPSILON, fabs(N)), N);
     const double t6 = 1. / (1. + t2*nH*PHY_DT_DIM*(1. - x_n));
 #else
-    //const float t6 = 1.f / copysign(max(FLT_EPSILON, fabs((float)N)), (float)N);
     const float t6 = 1.f / (1.f + (float)t2*nH*PHY_DT_DIM*(1.f - (float)x_n));
 #endif
 
     // Update moments > 0
-    //const real_t ratio = (real_t)(N_n * t6);
     for (int k = 1; k < M; k++) {
         long imem = id + k * NGRID;
         wn[imem] = wn[imem] * t6;
-        //wn[imem] = wn[imem] * ratio;
     }
 
     // Update x

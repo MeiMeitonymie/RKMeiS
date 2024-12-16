@@ -54,6 +54,11 @@ def get_dim_coeff(
         * np.float64(get_hmin(dim, dx_adim, dy_adim, dz_adim))
         / np.float64(c_adim)
     )
+    """dt_adim = (
+        np.float64(cfl)
+        * np.float64(dx_adim)
+        / np.float64(c_adim)
+    )"""
     print("dt_adim ",dt_adim)
 
     dx_dim = dx_adim * x_phy_value
@@ -75,9 +80,9 @@ if __name__ == "__main__":
 
     # Build Mesh
     dim = 3
-    mesh_nx = 5
-    mesh_ny = 5
-    mesh_nz = 5 if dim == 3 else 0
+    mesh_nx = 64
+    mesh_ny = 64
+    mesh_nz = 64 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
@@ -99,7 +104,7 @@ if __name__ == "__main__":
     filter_type = 0
 
     # ISOTHERMAL FLAG
-    iso = 0
+    iso = 1
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -161,6 +166,7 @@ if __name__ == "__main__":
                 "__PHY_C_DIM__": c_phy_value,
                 "__PHY_DT_DIM__": dt_dim,
                 "__PHY_W0_DIM__": w0_rescale,
+                "__PHY_X_DIM__":x_phy_value,
                 "__ISO__":iso,
             },
         )
@@ -188,8 +194,9 @@ if __name__ == "__main__":
         )
 
     #endt = 4*122.34e6 #*2#yrs
-    endt = 100e6
-    nb_iter = int(endt*3600*24*365/dt_dim)
+    #endt = 500e6
+    endt = 500e6
+    nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)
     else:
@@ -212,7 +219,7 @@ if __name__ == "__main__":
         use_chemistry=True,
     )
 
-    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365))
+    print("Simulation time in years: ", (dt_dim*nb_iter)/(3600*24*365.25))
     print("Number of iterations :",nb_iter)
     print("Export frequency :",export_freq)
     print("Export frequency :",export_freq)

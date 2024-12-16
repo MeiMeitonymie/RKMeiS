@@ -3,9 +3,9 @@
 
 // Physical constantes (dim) (double)
 #define PHY_CST_KB      (1.380649e-23)
-#define PHY_CST_ALPHA_I (2.493e-22) 
-// value from Dustier (Lewis et al 2023)
-// source black body 10^4K: 2.493e-22 + Eeff: 20.28 eV
+#define PHY_CST_ALPHA_I (1.63e-22) 
+// value from Stranex 2010, Aubert 2008
+// source black body 10^5K: 1.097e-22 + Eeff: 29.61 eV
 
 
 // Newton convergence criterion
