@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 if __name__ == "__main__":

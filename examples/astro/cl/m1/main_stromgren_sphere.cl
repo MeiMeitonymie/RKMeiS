@@ -69,12 +69,16 @@ void model_flux_num_bd(const real_t wL[M], const real_t wR[M],
 {
     /*real_t w[M];
     
-    for (int k = 0; k < M; k++) {
-        w[k] = 1e-8F;
-    }
+    w[0] = 1e-6F;
+    w[1] = 1e-8F;
+    w[2] = 1e-8F;
+    w[3] = 1e-8F;
 
+    for (int k = 0; k < M; k++) {
+        w[k] = 1e-6 * wL[k];
+    }
     
-    m1_num_flux_rusanov(wL, w, vn, flux);  */  
+    m1_num_flux_rusanov(wL, w, vn, flux);*/
     m1_num_flux_rusanov(wL, wL, vn, flux);
 }
 #endif

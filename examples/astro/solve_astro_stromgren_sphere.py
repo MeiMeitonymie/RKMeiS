@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
     # Dim values
-    cdiv = 1000.0
+    cdiv = 10.0
     x_phy_value = 6.6 * 3.086e19 * 2 #*2
     c_phy_value = 3.0e8 / cdiv
     w_phy_value = 5.0e48 #emissivity
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     filter_type = 0
 
     # ISOTHERMAL FLAG
-    iso = 1
+    iso = 0
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -193,9 +193,8 @@ if __name__ == "__main__":
             },
         )
 
-    #endt = 4*122.34e6 #*2#yrs
+    endt = 100e6
     #endt = 500e6
-    endt = 500e6
     nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)

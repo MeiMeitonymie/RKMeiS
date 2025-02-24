@@ -64,8 +64,8 @@ def get_dim_coeff(
 
 if __name__ == "__main__":
     # Model
-    use_m1 = False
-    use_pn = True
+    use_m1 = True
+    use_pn = False
     pn_order = 3
 
 

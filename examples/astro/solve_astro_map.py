@@ -23,7 +23,7 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0"
+os.environ["PYOPENCL_CTX"] = "0:0"
 
 
 def get_hmin(dim, dx, dy, dz):
@@ -187,11 +187,11 @@ if __name__ == "__main__":
         )
 
     init_buffer_map = {
-        "nh": read_astro_file_bin("density.bin", mesh_nx, mesh_ny, mesh_nz),
+        "nh": read_astro_file_bin("density_shift.bin", mesh_nx, mesh_ny, mesh_nz),
     }
 
-    endt = 0.4e6
-    #endt = 4.0e6
+    #endt = 0.4e6
+    endt = 4.0e6
     nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)
