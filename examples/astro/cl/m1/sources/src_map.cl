@@ -6,13 +6,13 @@
 #define SRC_Y      (0.5)
 #define SRC_Z      (0.5)
 #define SRC_VACCUM (DBL_EPSILON)
-#define SHIFT       (5)
+#define SHIFT       (123)
 #else
 #define SRC_X      (0.5f)
 #define SRC_Y      (0.5f)
 #define SRC_Z      (0.5f)
 #define SRC_VACCUM (FLT_EPSILON)
-#define SHIFT       (5)
+#define SHIFT       (123)
 #endif
 
 static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],

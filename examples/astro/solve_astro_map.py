@@ -98,8 +98,6 @@ if __name__ == "__main__":
     sig_value = 0.16
     filter_type = 0
     
-    #number of cell shifted in the hydrogen density bin file (to correct the source position)
-    shift = 5
 
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
@@ -185,7 +183,6 @@ if __name__ == "__main__":
                 "_MESH_NX_": mesh_nx,
                 "_MESH_NY_": mesh_ny,
                 "_MESH_NZ_": mesh_nz,
-                "__SHIFT__": shift,
             },
         )
 
