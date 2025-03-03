@@ -71,8 +71,8 @@ if __name__ == "__main__":
 
     # Adim values
     dim = 3
-    mesh_nx = 64
-    mesh_ny = 64
+    mesh_nx = 64*2
+    mesh_ny = 64*2
     mesh_nz = 64*2 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
@@ -98,8 +98,8 @@ if __name__ == "__main__":
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
         cfl,
-        dx_adim=1.0 / mesh_nx,
-        dy_adim=1.0 / mesh_ny,
+        dx_adim=2.0 / mesh_nx,
+        dy_adim=2.0 / mesh_ny,
         dz_adim=2.0 / mesh_ny,
         c_adim=1.0,
         x_phy_value=x_phy_value,
@@ -132,12 +132,12 @@ if __name__ == "__main__":
         nx=mesh_nx,
         ny=mesh_ny,
         nz=mesh_nz,
-        xmin=0.0,
-        xmax=1.0,
-        ymin=0.0,
-        ymax=1.0,
-        zmin=-1.0,
-        zmax=1.0,
+        xmin=-0.5,
+        xmax=1.5,
+        ymin=-0.5,
+        ymax=1.5,
+        zmin=-0.5,
+        zmax=1.5,
         use_periodic_bd=True,
     )
     nb_neighbors = 6 if dim == 3 else 3
