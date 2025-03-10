@@ -138,9 +138,10 @@ if __name__ == "__main__":
         ymax=1.5,
         zmin=-0.5,
         zmax=1.5,
-        use_periodic_bd=True,
+        use_periodic_bd=False,
     )
-    nb_neighbors = 6 if dim == 3 else 3
+    #Only use with use_periodic_bd = True
+    """nb_neighbors = 6 if dim == 3 else 3
 
     dx_offset = 0.5 * mesh.dx
     dy_offset = 0.5 * mesh.dy
@@ -168,7 +169,7 @@ if __name__ == "__main__":
         # Cells on +Z face
         nbs[mesh.cells_center[:, 2] == mesh.zmax - dz_offset, 4] = -1 
 
-    mesh.elem2elem = nbs.flatten()
+    mesh.elem2elem = nbs.flatten()"""
 
     # Build M1 Model
     if use_m1:
