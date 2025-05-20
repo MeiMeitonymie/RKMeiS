@@ -13,6 +13,7 @@
 #define SRC_Z      (0.5f)
 #define SRC_VACCUM (FLT_EPSILON)
 #define SHIFT       (123)
+#define DIM         (0.3f) 
 #endif
 
 static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
@@ -61,7 +62,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (87-1+SHIFT)%MESH_NY;
     sz = (88-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.646477039572334;
+        w[0] = 0.646477039572334*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -75,7 +76,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (120-1+SHIFT)%MESH_NY;
     sz = (103-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.687331910809231;
+        w[0] = 0.687331910809231*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -89,7 +90,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (79-1+SHIFT)%MESH_NY;
     sz = (65-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.720977691827869;
+        w[0] = 0.720977691827869*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -103,7 +104,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (98-1+SHIFT)%MESH_NY;
     sz = (119-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.745010302555466;
+        w[0] = 0.745010302555466*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -117,7 +118,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (97-1+SHIFT)%MESH_NY;
     sz = (123-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.783462353719616;
+        w[0] = 0.783462353719616*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -131,7 +132,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (45-1+SHIFT)%MESH_NY;
     sz = (60-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.869979626338959;
+        w[0] = 0.869979626338959*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -145,7 +146,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (10-1+SHIFT)%MESH_NY;
     sz = (27-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.915642027721405;
+        w[0] = 0.915642027721405*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -159,7 +160,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (77-1+SHIFT)%MESH_NY;
     sz = (48-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 0.939674638449001;
+        w[0] = 0.939674638449001*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -173,7 +174,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (55-1+SHIFT)%MESH_NY;
     sz = (62-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 1.21845279688911;
+        w[0] = 1.21845279688911*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -187,7 +188,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (73-1+SHIFT)%MESH_NY;
     sz = (47-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 1.63902316962204;
+        w[0] = 1.63902316962204*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -201,7 +202,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (89-1+SHIFT)%MESH_NY;
     sz = (96-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 1.99710825046320;
+        w[0] = 1.99710825046320*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -215,7 +216,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (110-1+SHIFT)%MESH_NY;
     sz = (91-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 2.27348358883057;
+        w[0] = 2.27348358883057*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -229,7 +230,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (91-1+SHIFT)%MESH_NY;
     sz = (106-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 2.38643629225025;
+        w[0] = 2.38643629225025*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -243,7 +244,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (61-1+SHIFT)%MESH_NY;
     sz = (64-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 3.25881936866198;
+        w[0] = 3.25881936866198*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -257,7 +258,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (62-1+SHIFT)%MESH_NY;
     sz = (61-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 5.81348456600542;
+        w[0] = 5.81348456600542*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
@@ -271,7 +272,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     sy = (97-1+SHIFT)%MESH_NY;
     sz = (114-1+SHIFT)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
-        w[0] = 7.96921044127083;
+        w[0] = 7.96921044127083*DIM;
         w[1] = t1;
         w[2] = t1;
 #ifndef IS_2D
