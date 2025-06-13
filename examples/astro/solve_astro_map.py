@@ -83,9 +83,11 @@ if __name__ == "__main__":
 
     # Dim values
     cdiv = 1
-    x_phy_value = 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
+    #x_phy_value = 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
+    x_phy_value = 100 * 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
     c_phy_value = 3.0e8 / cdiv #m/s
-    w_phy_value = 1e52 # s^-1
+    #w_phy_value = 1e52 # s^-1
+    w_phy_value = 1e52*5e3 # s^-1
 
     # FILTERING
     """
@@ -191,7 +193,8 @@ if __name__ == "__main__":
     }
 
     #endt = 0.4e6
-    endt = 4.0e6
+    #endt = 4.0e6
+    endt = 400.0e6
     nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
         export_freq = int(nb_iter/40)

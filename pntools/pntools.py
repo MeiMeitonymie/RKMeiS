@@ -969,7 +969,7 @@ if __name__ == "__main__":
 
 
 beam_code = ""
-for order in [1, 3, 5, 7, 9, 11]:
+for order in [1, 3]:
     # # Write include guard macro
 
     src_lst = [
@@ -990,12 +990,12 @@ for order in [1, 3, 5, 7, 9, 11]:
             # Beam spatial tickness
             "sigma_xyz": 0.005,
         },
-        """{
+        {
             "name": "beam_1",
             "values": pn_get_src_proj(
                 order,
                 pn_src_beam,
-                intensity=0.,
+                intensity=intensity,
                 th_0=0,
                 ph_0=0,
                 sigma=sig,
@@ -1006,7 +1006,7 @@ for order in [1, 3, 5, 7, 9, 11]:
             "z": 0.25,
             # Beam spatial tickness
             "sigma_xyz": 0.005,
-        },"""
+        },
     ]
 
     beam_code += f"#ifdef USE_SPHERICAL_HARMONICS_P{order}\n"
