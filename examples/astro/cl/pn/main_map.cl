@@ -93,6 +93,7 @@
 #else
 #include "../chemistry/hydrogen_map.cl"
 #endif
+#endif
 
 void model_init_cond(const real_t t, const real_t x[DIM], real_t s[M])
 {

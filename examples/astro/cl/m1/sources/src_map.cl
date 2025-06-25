@@ -131,7 +131,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
 
 //SOURCE 6
     sx = (100-1+SHIFTX)%MESH_NX;
-    sy = (45-1+SHIFTy)%MESH_NY;
+    sy = (45-1+SHIFTY)%MESH_NY;
     sz = (60-1+SHIFTZ)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
         w[0] = 0.869979626338959*DIM;
@@ -145,7 +145,7 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     
 //SOURCE 7
     sx = (86-1+SHIFTX)%MESH_NX;
-    sy = (10-1+SHIFTy)%MESH_NY;
+    sy = (10-1+SHIFTY)%MESH_NY;
     sz = (27-1+SHIFTZ)%MESH_NZ;
     if (id==(sx + sy*MESH_NX + sz*MESH_NY*MESH_NY)){
         w[0] = 0.915642027721405*DIM;
