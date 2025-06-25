@@ -12,6 +12,7 @@
 #define MESH_NX _MESH_NX_
 #define MESH_NY _MESH_NY_
 #define MESH_NZ _MESH_NZ_
+#define BIGGER  _BIGGER_
 #define C_WAVE (1.0)
 #if DIM == 2
 #define IS_2D
@@ -32,6 +33,9 @@
 #include "sources/src_map.cl"
 
 #ifdef USE_CHEMISTRY
+#if BIGGER == 1
+#include "../chemistry/hydrogen_map_bigger.cl"
+#else
 #include "../chemistry/hydrogen_map.cl"
 #endif
 

@@ -23,20 +23,20 @@ os.environ["PYOPENCL_COMPILER_OUTPUT"] = "1"
 os.environ["CUDA_CACHE_DISABLE"] = "1"
 
 # Auto-select OpenCL platform #0
-os.environ["PYOPENCL_CTX"] = "0:0"
+os.environ["PYOPENCL_CTX"] = "0"
 
 
 if __name__ == "__main__":
     # Model
-    use_m1 = True
-    use_pn = False
+    use_m1 = False
+    use_pn = True
     pn_order = 5
 
     # Build Mesh
     dim = 3
-    mesh_nx = 65
-    mesh_ny = 65
-    mesh_nz = 65 if dim == 3 else 0
+    mesh_nx = 129
+    mesh_ny = 129
+    mesh_nz = 129 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
 
@@ -48,8 +48,8 @@ if __name__ == "__main__":
     2 = Splines
     3 = Exp
     """
-    sig_value = 30
-    filter_type = 1
+    sig_value = 5
+    filter_type = 0
 
 
     mesh = MeshStructured(
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         tmax=None,
         cfl=0.8,
         dt=None,
-        iter_max=200,
+        iter_max=1200,
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=40,
