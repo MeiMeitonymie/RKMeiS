@@ -26,12 +26,14 @@ static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
     const real_t t0 = SRC_VACCUM;
 
 #ifdef USE_DOUBLE
-    const double t1 = 1.e-4;
+    //const double t1 = 1.e-4;
+    const double t1 = 0.1;
     const double t2 = 0.;
     const double t3 = 1.;
     const double t4 = 0.5;
 #else
-    const float t1 = 1.e-4f;
+    //const float t1 = 1.e-4f;
+    const float t1 = 0.1f;
     const float t2 = 0.f;
     const float t3 = 1.f;
     const float t4 = 0.5f;
