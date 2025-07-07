@@ -31,7 +31,7 @@ if command -v "module" >/dev/null 2>&1; then
     echo_i "Loading environment modules..."
     module load gcc
     module load cmake
-    module load python/python-3.10.13
+    module load python/python-3.11.4
 fi
 
 git_root=$(git rev-parse --show-toplevel 2>/dev/null) || true

@@ -46,7 +46,7 @@ if command -v "module" >/dev/null 2>&1; then
     module load gmsh
     module load gcc
     module load cmake
-    module load python/python-3.10.13
+    module load python/python-3.11.4
 fi
 
 if [ "$GIT_PULL" = true ]; then
