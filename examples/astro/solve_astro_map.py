@@ -92,8 +92,7 @@ if __name__ == "__main__":
         x_phy_value = 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
     c_phy_value = 3.0e8 / cdiv #m/s
     if bigger==1:
-        w_phy_value = 1e52
-        """*5e3""" # s^-1
+        w_phy_value = 1e52*5e3 # s^-1
     else:
         w_phy_value = 1e52 # s^-1
 
@@ -120,8 +119,21 @@ if __name__ == "__main__":
         c_phy_value=c_phy_value,
     )
 
+    if bigger == 1:
+        endt = 400.0e6
+    else:
+        endt = 4.0e6
+
+    nb_iter = int(endt*3600*24*365.25/dt_dim)
+    if nb_iter>200:
+        export_freq = int(nb_iter/40)
+    else:
+        export_freq=1
+
     iter = int(np.floor(w_phy_value / dt_dim))
-    w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim) #m^-3
+    #w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim) #m^-3
+    w0_rescale = (dt_dim*nb_iter) * w_phy_value / (dx_dim*mesh_nx * dy_dim*mesh_ny * dz_dim*mesh_nz) #m^-3
+
 
     pprint_dict(
         {
@@ -216,12 +228,7 @@ if __name__ == "__main__":
     init_buffer_map = {
         "nh": read_astro_file_bin("density_shift.bin", mesh_nx, mesh_ny, mesh_nz),
     }
-
-    #endt = 0.4e6
-    if bigger == 1:
-        endt = 400.0e6
-    else:
-        endt = 4.0e6
+    
     
     nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
