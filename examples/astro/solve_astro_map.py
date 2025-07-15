@@ -122,7 +122,8 @@ if __name__ == "__main__":
     if bigger == 1:
         endt = 400.0e6
     else:
-        endt = 4.0e6
+        #endt = 4.0e6
+        endt = 0.4e6
 
     nb_iter = int(endt*3600*24*365.25/dt_dim)
     if nb_iter>200:
