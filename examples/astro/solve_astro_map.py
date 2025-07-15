@@ -245,7 +245,7 @@ if __name__ == "__main__":
         dt=None,
         iter_max=nb_iter,
         use_muscl=False,
-        export_idx=[0, 1, 2, 3],
+        export_idx=[0, 1, 2],
         export_frq=export_freq,
         use_double=True,
         use_chemistry=True,
