@@ -167,17 +167,17 @@ if __name__ == "__main__":
         )
     else:
         mesh = MeshStructured(
-        filename=None,
-        nx=mesh_nx,
-        ny=mesh_ny,
-        nz=mesh_nz,
-        xmin=0.0,
-        xmax=1.0,
-        ymin=0.0,
-        ymax=1.0,
-        zmin=0.0,
-        zmax=1.0,
-        use_periodic_bd=False,
+            filename=None,
+            nx=mesh_nx,
+            ny=mesh_ny,
+            nz=mesh_nz,
+            xmin=0.0,
+            xmax=1.0,
+            ymin=0.0,
+            ymax=1.0,
+            zmin=0.0,
+            zmax=1.0,
+            use_periodic_bd=False,
         )
 
     # Build M1 Model

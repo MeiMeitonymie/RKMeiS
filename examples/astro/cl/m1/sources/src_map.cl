@@ -17,7 +17,6 @@
 #define SHIFTX      (0)
 #define SHIFTY      (0)
 #define SHIFTZ      (123)
-#define DIM         (0.3f) 
 #endif
 
 static inline void m1_src_stromgren_sphere(const real_t t, const real_t x[DIM],
