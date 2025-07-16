@@ -120,7 +120,7 @@ if __name__ == "__main__":
     )
 
     if bigger == 1:
-        endt = 400.0e6
+        endt = 200.0e6
     else:
         #endt = 4.0e6
         endt = 0.4e6
@@ -132,9 +132,10 @@ if __name__ == "__main__":
         export_freq=1
 
     iter = int(np.floor(w_phy_value / dt_dim))
-    #w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim) #m^-3
-    w0_rescale = (dt_dim*nb_iter) * w_phy_value / (dx_dim*mesh_nx * dy_dim*mesh_ny * dz_dim*mesh_nz) #m^-3
-
+    if bigger == 1:
+        w0_rescale = (dt_dim*nb_iter) * w_phy_value / (dx_dim*mesh_nx * dy_dim*mesh_ny * dz_dim*mesh_nz) #m^-3
+    else:
+        w0_rescale = dt_dim * w_phy_value / (dx_dim * dy_dim * dz_dim) #m^-3
 
     pprint_dict(
         {
