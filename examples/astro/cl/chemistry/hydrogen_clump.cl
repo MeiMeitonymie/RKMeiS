@@ -202,7 +202,8 @@ double cooling_rate_density(const double T, const double nH, const double x_n)
 double heating_rate(const double nH, const double x, const double x_n,
                     const double N, const double al_i)
 {
-    const double e = (20.28 - 13.6) * 1.60218e-19;
+    const double e = (29.61 - 13.6) * 1.60218e-19;
+    //const double e = (20.28 - 13.6) * 1.60218e-19; 
     // Short time step
     return nH * (1. - x_n) * N * al_i * e * PHY_C_DIM;
 }

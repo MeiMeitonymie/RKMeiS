@@ -74,7 +74,10 @@ if __name__ == "__main__":
     bigger = 1
 
     # CFL
-    cfl = 0.1
+    if bigger:
+        cfl = 0.008
+    else:
+        cfl = 0.1
 
     # Build Mesh
     dim = 3
@@ -120,7 +123,7 @@ if __name__ == "__main__":
     )
 
     if bigger == 1:
-        endt = 200.0e6
+        endt = 210.0e6
     else:
         #endt = 4.0e6
         endt = 0.4e6
