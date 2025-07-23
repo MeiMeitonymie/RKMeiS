@@ -60,7 +60,7 @@ static inline void m1_src_clump(const real_t t, const real_t x[DIM],
     //Small slab
     //if ((x[0] >= SRC_X-0.5) && (x[0] <= (SRC_X+0.5)) && (x[1] >= SRC_Y-0.5) && (x[1] <= (SRC_Y+0.5)) && (x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
     //complet slab
-    if ((x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
+if ((x[2] >= SRC_Z) && (x[2] <= (SRC_Z+DZ)))  {
 
         w[0] = t3;
         w[1] = t2;

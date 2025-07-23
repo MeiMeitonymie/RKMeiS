@@ -71,8 +71,8 @@ if __name__ == "__main__":
 
     # Adim values
     dim = 3
-    mesh_nx = 64
-    mesh_ny = 64
+    mesh_nx = 64*2
+    mesh_ny = 64*2
     mesh_nz = 64*2 if dim == 3 else 0
 
     mesh_file = f"unit_cube_nx{mesh_nx}_ny{mesh_ny}_nz{mesh_nz}.msh"
@@ -98,8 +98,8 @@ if __name__ == "__main__":
     dx_dim, dy_dim, dz_dim, dt_dim = get_dim_coeff(
         dim,
         cfl,
-        dx_adim=1.0 / mesh_nx,
-        dy_adim=1.0 / mesh_ny,
+        dx_adim=2.0 / mesh_nx,
+        dy_adim=2.0 / mesh_ny,
         dz_adim=2.0 / mesh_ny,
         c_adim=1.0,
         x_phy_value=x_phy_value,
@@ -132,22 +132,22 @@ if __name__ == "__main__":
         nx=mesh_nx,
         ny=mesh_ny,
         nz=mesh_nz,
-        xmin=0.0,
-        xmax=1.0,
-        ymin=0.0,
-        ymax=1.0,
+        xmin=-0.5,
+        xmax=1.5,
+        ymin=-0.5,
+        ymax=1.5,
         zmin=-0.5,
         zmax=1.5,
-        use_periodic_bd=True,
+        use_periodic_bd=False,
     )
     #Only use with use_periodic_bd = True
-    nb_neighbors = 6 if dim == 3 else 3
+    """nb_neighbors = 6 if dim == 3 else 3
 
     dx_offset = 0.5 * mesh.dx
     dy_offset = 0.5 * mesh.dy
     dz_offset = 0.5 * mesh.dz if dim == 3 else None
 
-    nbs = mesh.elem2elem.reshape(-1, nb_neighbors)
+    nbs = mesh.elem2elem.reshape(-1, nb_neighbors)"""
 
     # Cells on -X face
     # nbs[mesh.cells_center[:, 0] == mesh.xmin + dx_offset, 1] = -1 
@@ -162,14 +162,14 @@ if __name__ == "__main__":
     # nbs[mesh.cells_center[:, 1] == mesh.ymax - dy_offset, 2] = -1
 
 
-    if dim == 3:
+    """if dim == 3:
         # Cells on -Z face
         nbs[mesh.cells_center[:, 2] == mesh.zmin + dz_offset, 5] = -1  
 
         # Cells on +Z face
         nbs[mesh.cells_center[:, 2] == mesh.zmax - dz_offset, 4] = -1 
 
-    mesh.elem2elem = nbs.flatten()
+    mesh.elem2elem = nbs.flatten()"""
 
     # Build M1 Model
     if use_m1:

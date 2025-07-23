@@ -271,43 +271,94 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     const double N_pos = max(0., N);
     
     const double x = (double)xi[id];
-    const double T = (double)temp[id];
+    double T = (double)temp[id];
     const double nH = (double)nh[id];
 
     // Chemistry coefficients
-    const double al = alpha_ah(T);
-    const double al_b = alpha_bh(T);
-    const double bt = beta_h(T);
+    double al = alpha_ah(T);
+    double al_b = alpha_bh(T);
+    double bt = beta_h(T);
 
     // Intermediate vars
-    const double t0 = nH * nH;
-    const double t1 = t0 * PHY_DT_DIM;
-    const double t2 = PHY_CST_ALPHA_I * PHY_C_DIM;
-    const double t3 = nH / t2;
-    const double t4 = 1. / (t2 * PHY_DT_DIM);
+    double t0 = nH * nH;
+    double t1 = t0 * PHY_DT_DIM;
+    double t2 = PHY_CST_ALPHA_I * PHY_C_DIM;
+    double t3 = nH / t2;
+    double t4 = 1. / (t2 * PHY_DT_DIM);
 
     // Compute x
-    const double m = (al_b + bt) * t1;
-    const double n = nH - (al + bt) * t3 - (al_b + 2. * bt) * t1;
-    const double p = -nH * (1. + x) - N_pos - t4 + bt * (t3 + t1);
-    const double q = N_pos + x * (nH + t4);
-    const double x_n = get_root_newton_raphson(m, n, p, q, x);
+    double m = (al_b + bt) * t1;
+    double n = nH - (al + bt) * t3 - (al_b + 2. * bt) * t1;
+    double p = -nH * (1. + x) - N_pos - t4 + bt * (t3 + t1);
+    double q = N_pos + x * (nH + t4);
+    double x_n = get_root_newton_raphson(m, n, p, q, x);
 
     // Compute N
-    const double t5 = x_n * x_n;
-    const double c1 = bt * t1 * (x_n - t5);
-    const double c2 = -al_b * t1 * t5;
-    const double N_n = N + c1 + c2 + -nH * (x_n - x);
+    double t5 = x_n * x_n;
+    double c1 = bt * t1 * (x_n - t5);
+    double c2 = -al_b * t1 * t5;
+    double N_n = N + c1 + c2 + -nH * (x_n - x);
     
     // Patch
     // const double N_n = fabs(N) + c1 + c2 + -nH * (x_n - x);
 
+    
+
     // Compute T
-    const double L = cooling_rate_density(T, nH, x_n);
-    const double H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
-    const double coef =
+    double L = cooling_rate_density(T, nH, x_n);
+    double H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
+    double E = (3./2.) * x*nH + nH * T * PHY_CST_KB;
+    double PHY_DT_COOL = E/L;
+    if (PHY_DT_COOL < PHY_DT_DIM){
+        printf("Error: DT too big for temperature\n");
+        printf("diff : %lf\n",PHY_DT_COOL-PHY_DT_DIM);
+    }
+
+    double coef =
         2. * (H - L) * PHY_DT_DIM / (3. * nH * (1. + x_n) * PHY_CST_KB);
-    const double T_n = max((coef + T) / (1. + x_n - x), 10.);
+    double T_n = max((coef + T) / (1. + x_n - x), 10.);
+    /*int count = 0;
+    while (fabs(T-T_n)>1.e-6)
+    {
+        T = T_n;
+
+         // Chemistry coefficients
+        al = alpha_ah(T);
+        al_b = alpha_bh(T);
+        bt = beta_h(T);
+
+        // Intermediate vars
+        t0 = nH * nH;
+        t1 = t0 * PHY_DT_DIM;
+        t2 = PHY_CST_ALPHA_I * PHY_C_DIM;
+        t3 = nH / t2;
+        t4 = 1. / (t2 * PHY_DT_DIM);
+ 
+        // Compute x
+        m = (al_b + bt) * t1;
+        n = nH - (al + bt) * t3 - (al_b + 2. * bt) * t1;
+        p = -nH * (1. + x) - N_pos - t4 + bt * (t3 + t1);
+        q = N_pos + x * (nH + t4);
+        x_n = get_root_newton_raphson(m, n, p, q, x);
+
+        // Compute N
+        t5 = x_n * x_n;
+        c1 = bt * t1 * (x_n - t5);
+        c2 = -al_b * t1 * t5;
+        N_n = N + c1 + c2 + -nH * (x_n - x);
+
+
+        L = cooling_rate_density(T, nH, x_n);
+        H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
+        coef = 2. * (H - L) * PHY_DT_COOL / (3. * nH * (1. + x_n) * PHY_CST_KB);
+        T_n = max((coef + T) / (1. + x_n - x), 10.);
+        count = count + 1;
+        if (count>100)
+        {
+            printf("Error: no temperature convergence within 100 interations\n");
+            break;
+        }
+    }*/
 
     // Update N (moment 0)
     // Use PHY_W0_DIM to remove physical dimension

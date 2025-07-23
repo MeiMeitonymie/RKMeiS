@@ -90,9 +90,9 @@ if __name__ == "__main__":
     # Dim values
     cdiv = 1
     if bigger==1:
-        x_phy_value = 100 * 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
+        x_phy_value = 100 * 0.5 * 3.086e22 / 0.7 /(1+6) #redshift + h^-1
     else:
-        x_phy_value = 0.5 * 3.086e22 / 0.7 /10 #redshift + h^-1
+        x_phy_value = 0.5 * 3.086e22 / 0.7 /(1+9) #redshift + h^-1
     c_phy_value = 3.0e8 / cdiv #m/s
     if bigger==1:
         w_phy_value = 1e52*5e3 # s^-1
