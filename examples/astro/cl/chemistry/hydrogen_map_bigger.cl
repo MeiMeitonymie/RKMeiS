@@ -313,13 +313,13 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     double PHY_DT_COOL = 0.9 * E/L;
     if (PHY_DT_COOL < PHY_DT_DIM){
         printf("Error: DT too big for temperature\n");
-        printf("diff : %lf\n",PHY_DT_COOL-PHY_DT_DIM);
+        printf("difftemp : %lf\n",PHY_DT_COOL-PHY_DT_DIM);
     }
 
     double coef =
-        2. * (H - L) * PHY_DT_COOL / (3. * nH * (1. + x_n) * PHY_CST_KB);
+        2. * (H - L) * PHY_DT_DIM / (3. * nH * (1. + x_n) * PHY_CST_KB);
     double T_n = max((coef + T) / (1. + x_n - x), 10.);
-    int count = 0;
+    /*int count = 0;
     while (fabs(T-T_n)>1.e-6)
     {
         T = T_n;
@@ -365,7 +365,7 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
             printf("Error: no temperature convergence within 100 interations\n");
             break;
         }
-    }
+    }*/
 
     // Update N (moment 0)
     // Use PHY_W0_DIM to remove physical dimension
