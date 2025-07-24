@@ -355,6 +355,8 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
 
         L = cooling_rate_density(T, nH, x_n);
         H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
+        E = (3./2.) * x*nH + nH * T * PHY_CST_KB;
+        PHY_DT_COOL = 0.9 * E/L;
         coef = 2. * (H - L) * PHY_DT_COOL / (3. * nH * (1. + x_n) * PHY_CST_KB);
         T_n = max((coef + T) / (1. + x_n - x), 10.);
         count = count + 1;
