@@ -13,7 +13,7 @@
 
 
 // Newton convergence criterion
-#define NEWTON_EPS      (1e-8)
+#define NEWTON_EPS      (1.e-8)
 
 // Collisional ionisation rate in cm^{3}.s^{-1} (Maselli et al. 2003)
 double gamma_h0(const double T)
@@ -225,6 +225,7 @@ double get_root_newton_raphson(const double a, const double b, const double c,
     double f = HUGE_VAL;
     double df, t2, t3;
     int count = 0;
+    double diff;
 
     while (fabs(f) >= NEWTON_EPS) {
         // Intermediate variables
@@ -237,8 +238,9 @@ double get_root_newton_raphson(const double a, const double b, const double c,
 
         x -= f / df;
         if (count>1000) {
+            diff = fabs(f)-NEWTON_EPS;
             printf("Error: infinite newton loop\n");
-            printf("diff : %lf\n",fabs(f)-NEWTON_EPS);
+            printf("diff : %lf, racine: %lf\n", diff, x);
         }
     }
     return x;
@@ -267,12 +269,12 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     const long id = get_global_id(0);
 
     // Use PHY_W0_DIM to give physical dimension
-    const double N = (double)(wn[id] * PHY_W0_DIM);
-    const double N_pos = max(0., N);
+    double N = (double)(wn[id] * PHY_W0_DIM);
+    double N_pos = max(0., N);
     
-    const double x = (double)xi[id];
+    double x = (double)xi[id];
     double T = (double)temp[id];
-    const double nH = (double)nh[id];
+    double nH = (double)nh[id];
 
     // Chemistry coefficients
     double al = alpha_ah(T);
@@ -308,19 +310,22 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
     double L = cooling_rate_density(T, nH, x_n);
     double H = heating_rate(nH, x, x_n, N_pos, PHY_CST_ALPHA_I);
     double E = (3./2.) * x*nH + nH * T * PHY_CST_KB;
-    double PHY_DT_COOL = E/L;
+    double PHY_DT_COOL = 0.9 * E/L;
     if (PHY_DT_COOL < PHY_DT_DIM){
         printf("Error: DT too big for temperature\n");
         printf("diff : %lf\n",PHY_DT_COOL-PHY_DT_DIM);
     }
 
     double coef =
-        2. * (H - L) * PHY_DT_DIM / (3. * nH * (1. + x_n) * PHY_CST_KB);
+        2. * (H - L) * PHY_DT_COOL / (3. * nH * (1. + x_n) * PHY_CST_KB);
     double T_n = max((coef + T) / (1. + x_n - x), 10.);
-    /*int count = 0;
+    int count = 0;
     while (fabs(T-T_n)>1.e-6)
     {
         T = T_n;
+        x = x_n;
+        N = N_n;
+        N_pos = max(0., N);
 
          // Chemistry coefficients
         al = alpha_ah(T);
@@ -329,10 +334,10 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
 
         // Intermediate vars
         t0 = nH * nH;
-        t1 = t0 * PHY_DT_DIM;
-        t2 = PHY_CST_ALPHA_I * PHY_C_DIM;
+        t1 = t0 * PHY_DT_COOL;
+        t2 = PHY_CST_ALPHA_I * PHY_DT_COOL;
         t3 = nH / t2;
-        t4 = 1. / (t2 * PHY_DT_DIM);
+        t4 = 1. / (t2 * PHY_DT_COOL);
  
         // Compute x
         m = (al_b + bt) * t1;
@@ -358,7 +363,7 @@ __kernel void chem_step(__global const real_t *nh, __global real_t *wn,
             printf("Error: no temperature convergence within 100 interations\n");
             break;
         }
-    }*/
+    }
 
     // Update N (moment 0)
     // Use PHY_W0_DIM to remove physical dimension
