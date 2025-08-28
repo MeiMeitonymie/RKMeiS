@@ -238,11 +238,11 @@ if __name__ == "__main__":
     }
     
     
-    nb_iter = int(endt*3600*24*365.25/dt_dim)
-    if nb_iter>200:
-        export_freq = int(nb_iter/40)
-    else:
-        export_freq=1
+    #nb_iter = int(endt*3600*24*365.25/dt_dim)
+    #if nb_iter>200:
+    #    export_freq = int(nb_iter/40)
+    #else:
+    #    export_freq=1
 
     s = AstroFVSolverCL(
         mesh=mesh,
@@ -255,7 +255,7 @@ if __name__ == "__main__":
         use_muscl=False,
         export_idx=[0, 1, 2],
         export_frq=export_freq,
-        use_double=True,
+        use_double=False,
         use_chemistry=True,
         init_buffer_map=init_buffer_map,
     )
